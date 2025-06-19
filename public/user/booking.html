@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking PlayStation - PlayStation Rental</title>
+    <link rel="stylesheet" href="../css/user/dashboard.css"> <link rel="stylesheet" href="../css/user/booking.css">
+    </head>
+<body>
+    <div class="user-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><span class="icon">🎮</span> User Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><span class="icon">🏠</span> Dashboard</a></li>
+                    <li><a href="booking.html" class="active"><span class="icon">➕</span> Booking Baru</a></li>
+                    <li><a href="history.html"><span class="icon">🗓️</span> Riwayat Booking</a></li>
+                    <li><a href="profile.html"><span class="icon">👤</span> Profil</a></li>
+                    <li><a href="#" id="logoutBtn"><span class="icon">➡️</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Booking PlayStation</h1>
+            </header>
+
+            <section class="booking-form-section">
+                <h2><span class="icon">🎮</span> Pilih PlayStation & Waktu</h2>
+                <form id="bookingForm">
+                    <div class="form-group">
+                        <label for="playstationSelect">Pilih PlayStation:</label>
+                        <select id="playstationSelect" required>
+                            <option value="">-- Pilih PS --</option>
+                            </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bookingDate">Tanggal Booking:</label>
+                        <input type="date" id="bookingDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="durationHours">Durasi (Jam):</label>
+                        <select id="durationHours" required>
+                            <option value="">-- Pilih Durasi --</option>
+                            <option value="1">1 Jam</option>
+                            <option value="2">2 Jam</option>
+                            <option value="3">3 Jam</option>
+                            <option value="4">4 Jam</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Slot Waktu Tersedia:</label>
+                        <div id="availableSlots" class="slots-grid">
+                            <p>Pilih PS, tanggal, dan durasi untuk melihat slot.</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn primary-btn" id="confirmBookingBtn" disabled>Konfirmasi Booking</button>
+                </form>
+                <div id="bookingMessage" class="message"></div> 
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/user/booking.js"></script>
+</body>
+</html>

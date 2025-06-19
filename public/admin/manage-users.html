@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen User - Admin</title>
+    <link rel="stylesheet" href="../css/admin/dashboard-admin.css"> <link rel="stylesheet" href="../css/admin/manage-users.css">
+    </head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><span class="icon">⚙️</span> Admin Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard-admin.html"><span class="icon">🏠</span> Dashboard</a></li>
+                    <li><a href="manage-ps.html"><span class="icon">🎮</span> Manajemen PlayStation</a></li>
+                    <li><a href="manage-bookings.html"><span class="icon">📅</span> Manajemen Booking</a></li>
+                    <li><a href="manage-users.html" class="active"><span class="icon">👥</span> Manajemen User</a></li>
+                    <li><a href="reports.html"><span class="icon">📊</span> Laporan</a></li>
+                    <li><a href="#" id="logoutBtn"><span class="icon">➡️</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Manajemen User</h1>
+            </header>
+
+            <section class="user-management-section">
+                <h2><span class="icon">👥</span> Daftar Pengguna</h2>
+                <div class="table-container">
+                    <table id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Terdaftar Sejak</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="6">Memuat data user...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p id="noUsersMessage" class="no-data-message" style="display: none;">Tidak ada data user yang ditemukan.</p>
+                <div id="userMessage" class="message"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/admin/manage-users.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pengguna - PlayStation Rental</title>
+    <link rel="stylesheet" href="../css/user/dashboard.css">
+    </head>
+<body>
+    <div class="user-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><span class="icon">🎮</span> User Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html" class="active"><span class="icon">🏠</span> Dashboard</a></li>
+                    <li><a href="booking.html"><span class="icon">➕</span> Booking Baru</a></li>
+                    <li><a href="history.html"><span class="icon">🗓️</span> Riwayat Booking</a></li>
+                    <li><a href="profile.html"><span class="icon">👤</span> Profil</a></li>
+                    <li><a href="#" id="logoutBtn"><span class="icon">➡️</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Selamat Datang, <span id="usernameDisplay">Pengguna</span>!</h1>
+                <div class="user-info">
+                    <span>Email: <span id="emailDisplay"></span></span>
+                </div>
+            </header>
+
+            <section class="dashboard-summary-cards">
+                <div class="summary-card">
+                    <div class="card-icon"><span class="icon">📅</span></div>
+                    <h3>Booking Mendatang</h3>
+                    <p id="upcomingBookingsCount">0</p>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon"><span class="icon">✅</span></div>
+                    <h3>PS Tersedia Hari Ini</h3>
+                    <p id="availablePsCount">0</p>
+                </div>
+            </section>
+
+            <section class="upcoming-bookings">
+                <h2><span class="icon">🔔</span> Booking Mendatang Anda</h2>
+                <div id="upcomingBookingsList" class="booking-list">
+                    <p>Memuat booking mendatang...</p>
+                </div>
+                <p class="no-booking-message" style="display: none;">Anda belum memiliki booking mendatang.</p>
+            </section>
+
+            <section class="recent-activities">
+                <h2><span class="icon">🕒</span> Aktivitas Terbaru</h2>
+                <div id="recentActivitiesList" class="booking-list">
+                    <p>Memuat aktivitas terbaru...</p>
+                </div>
+                <p class="no-recent-activity-message" style="display: none;">Tidak ada aktivitas booking terbaru.</p>
+                <a href="history.html" class="btn btn-secondary mt-20">Lihat Semua Riwayat</a>
+            </section>
+
+            <section class="available-ps-overview">
+                <h2><span class="icon">🎮</span> PlayStation Tersedia Untuk Booking</h2>
+                <div id="availablePsList" class="ps-grid">
+                    <p>Memuat PlayStation tersedia...</p>
+                </div>
+                <p class="no-ps-message" style="display: none;">Tidak ada PlayStation yang tersedia saat ini.</p>
+                <a href="booking.html" class="btn btn-primary mt-20">Booking Sekarang</a>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/user/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran Booking - PlayStation Rental</title>
+    <link rel="stylesheet" href="../css/user/dashboard.css">
+    <link rel="stylesheet" href="../css/user/payment.css">
+    </head>
+<body>
+    <div class="user-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-header"><h2><span class="icon">🎮</span> User Panel</h2></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><span class="icon">🏠</span> Dashboard</a></li>
+                    <li><a href="booking.html"><span class="icon">➕</span> Booking Baru</a></li>
+                    <li><a href="history.html"><span class="icon">🗓️</span> Riwayat Booking</a></li>
+                    <li><a href="profile.html"><span class="icon">👤</span> Profil</a></li>
+                    <li><a href="#" id="logoutBtn"><span class="icon">➡️</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Detail Pembayaran</h1>
+            </header>
+
+            <section class="payment-details-section">
+                <div class="payment-card">
+                    <div class="status-indicator">
+                        <span class="icon" id="paymentStatusIcon">⏳</span>
+                    </div>
+
+                    <h2 id="paymentHeaderTitle">Booking Berhasil Dibuat!</h2>
+                    <p class="instruction">Mohon selesaikan pembayaran Anda dalam waktu **<span id="countdown">Memuat...</span>** untuk mengkonfirmasi booking.</p>
+                    
+                    <div class="booking-summary">
+                        <h3>Ringkasan Booking Anda</h3>
+                        <div class="summary-details">
+                            <p><strong>Nomor Booking:</strong> <span id="bookingIdDisplay"></span></p>
+                            <p><strong>PlayStation:</strong> <span id="psNameDisplay"></span> (<span id="psTypeDisplay"></span>)</p>
+                            <p><strong>Tanggal & Waktu:</strong> <span id="bookingDateTimeDisplay"></span></p>
+                            <p><strong>Durasi:</strong> <span id="durationDisplay"></span></p>
+                        </div>
+                        <p class="total-amount"><strong>Total Pembayaran:</strong> <span id="amountDisplay">Rp 0</span></p>
+                    </div>
+
+                    <h3><span class="icon">💳</span> Pilih Metode Pembayaran</h3>
+                    <div class="payment-methods-grid">
+                        <div class="payment-method-card">
+                            <div class="method-header">
+                                <img src="/assets/bri.png" alt="BRI Logo" class="bank-logo">
+                                <h4>Transfer Bank BRI</h4>
+                            </div>
+                            <p>Bank: BRI</p>
+                            <p>Nomor Rekening: <strong id="rekeningBri">1234567890 (a/n PS Rental)</strong></p>
+                            <button class="copy-btn" data-target="rekeningBri">Salin Nomor</button>
+                            <p class="note">Silakan transfer sesuai jumlah di atas. Proses verifikasi manual.</p>
+                        </div>
+                        <div class="payment-method-card">
+                            <div class="method-header">
+                                <img src="/assets/gopay.png" alt="GoPay Logo" class="bank-logo"> <h4>GoPay</h4>
+                            </div>
+                            <p>Nomor GoPay: <strong id="gopayNumber">081234567891</strong></p> <button class="copy-btn" data-target="gopayNumber">Salin Nomor</button>
+                            <p class="note">Transfer melalui aplikasi GoPay Anda. Pastikan jumlah transfer sesuai.</p>
+                        </div>
+                        <div class="payment-method-card">
+                            <div class="method-header">
+                                <img src="/assets/dana.png" alt="DANA Logo" class="bank-logo">
+                                <h4>DANA</h4>
+                            </div>
+                            <p>Nomor DANA: <strong id="danaNumber">081234567890</strong></p>
+                            <button class="copy-btn" data-target="danaNumber">Salin Nomor</button>
+                            <p class="note">Transfer melalui aplikasi DANA.</p>
+                        </div>
+                    </div>
+
+                    <div class="payment-instructions">
+                        <h3><span class="icon">💡</span> Instruksi Penting:</h3>
+                        <ul>
+                            <li>Pastikan jumlah transfer **tepat** dengan total pembayaran Anda.</li>
+                            <li>Kirim **bukti transfer** Anda ke Admin via WhatsApp: <a href="https://wa.me/6281234567890" target="_blank" class="whatsapp-link">0812-3456-7890</a></li>
+                            <li>Booking Anda akan dikonfirmasi **setelah** pembayaran diverifikasi oleh Admin (maks. 15 menit).</li>
+                            <li>Jika Anda memiliki pertanyaan, jangan ragu untuk menghubungi kami.</li>
+                        </ul>
+                    </div>
+
+                    <div class="upload-proof-section">
+                        <h3><span class="icon">📤</span> Unggah Bukti Pembayaran</h3>
+                        <form id="uploadProofForm" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="proofImage">Pilih Gambar Bukti Transfer:</label>
+                                <input type="file" id="proofImage" name="proofImage" accept="image/jpeg, image/png" required>
+                                <p class="file-note">Format: JPG/PNG, Max: 2MB</p>
+                            </div>
+                            <button type="submit" class="btn primary-btn" id="uploadProofBtn">Unggah Bukti</button>
+                        </form>
+                        <div id="uploadProofMessage" class="message"></div>
+                    </div>
+                    
+                    <a href="history.html" class="btn btn-secondary mt-30">Lihat Riwayat Booking</a>
+                </div>
+                <div id="paymentMessage" class="message"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/user/payment.js"></script>
+</body>
+</html>

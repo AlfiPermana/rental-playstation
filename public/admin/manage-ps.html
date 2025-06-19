@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen PlayStation - Admin</title>
+    <link rel="stylesheet" href="../css/admin/dashboard-admin.css"> <link rel="stylesheet" href="../css/admin/manage-ps.css">
+    </head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><span class="icon">⚙️</span> Admin Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard-admin.html"><span class="icon">🏠</span> Dashboard</a></li>
+                    <li><a href="manage-ps.html" class="active"><span class="icon">🎮</span> Manajemen PlayStation</a></li>
+                    <li><a href="manage-bookings.html"><span class="icon">📅</span> Manajemen Booking</a></li>
+                    <li><a href="manage-users.html"><span class="icon">👥</span> Manajemen User</a></li>
+                    <li><a href="reports.html"><span class="icon">📊</span> Laporan</a></li>
+                    <li><a href="#" id="logoutBtn"><span class="icon">➡️</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Manajemen PlayStation</h1>
+            </header>
+
+            <section class="ps-management-section">
+                <h2><span class="icon">➕</span> Tambah / Edit PlayStation</h2>
+                <button id="addPsBtn" class="btn primary-btn mt-10">Tambah PlayStation Baru</button>
+
+                <div id="psFormContainer" class="form-container" style="display: none;">
+                    <h3><span class="icon">✏️</span> <span id="formTitle">Tambah</span> PlayStation</h3>
+                    <form id="psForm">
+                        <input type="hidden" id="psId">
+                        <div class="form-group">
+                            <label for="psName">Nama / Nomor Unit:</label>
+                            <input type="text" id="psName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="psType">Tipe PS:</label>
+                            <select id="psType" required>
+                                <option value="">Pilih Tipe</option>
+                                <option value="PS3">PlayStation 3</option>
+                                <option value="PS4">PlayStation 4</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="psPricePerHour">Harga Per Jam:</label>
+                            <input type="number" id="psPricePerHour" required min="0" step="1000"> </div>
+                        <div class="form-group">
+                            <label for="psStatus">Status:</label>
+                            <select id="psStatus" required>
+                                <option value="available">Tersedia</option>
+                                <option value="in-use">Sedang Dipakai</option>
+                                <option value="maintenance">Perawatan</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="psDescription">Deskripsi (Opsional):</label>
+                            <textarea id="psDescription" rows="3"></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn primary-btn">Simpan</button>
+                            <button type="button" class="btn secondary-btn" id="cancelPsFormBtn">Batal</button>
+                        </div>
+                    </form>
+                    <div id="formMessage" class="message"></div>
+                </div>
+
+                <h2><span class="icon">🎮</span> Daftar PlayStation</h2>
+                <div class="table-container">
+                    <table id="psTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama/Nomor</th>
+                                <th>Tipe</th>
+                                <th>Harga/Jam</th> <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="6">Memuat data PlayStation...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p id="noPsMessage" class="no-data-message" style="display: none;">Tidak ada PlayStation yang terdaftar.</p>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/admin/manage-ps.js"></script>
+</body>
+</html>

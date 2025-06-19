@@ -1,0 +1,141 @@
+/* public/css/user/booking.css */
+/* Menggunakan gaya dasar dari dashboard.css */
+
+.booking-form-section {
+    padding: 35px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    border: 1px solid #f0f3f6;
+}
+
+/* Override h2 default agar ikonnya sesuai */
+.booking-form-section h2 {
+    color: #34495e;
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.booking-form-section h2 .icon {
+    font-size: 1.1em;
+    color: #e74c3c; /* Red icon for section headings */
+}
+
+
+.form-group {
+    margin-bottom: 25px; /* More space between form groups */
+    position: relative; /* For potential styling enhancements */
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px; /* More space below label */
+    font-weight: 600; /* Bolder label */
+    color: #34495e; /* Darker label color */
+    font-size: 1.1rem; /* Larger label font */
+}
+
+.form-group select,
+.form-group input[type="date"] {
+    width: calc(100% - 24px); /* Adjust for padding and border */
+    padding: 12px; /* More padding */
+    border: 1px solid #dcdfe6; /* Lighter border */
+    border-radius: 8px; /* More rounded */
+    font-size: 1rem;
+    background-color: white;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06); /* Subtle inner shadow */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group select:focus,
+.form-group input[type="date"]:focus {
+    border-color: #3498db; /* Blue border on focus */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06), 0 0 0 3px rgba(52, 152, 219, 0.2); /* Blue outline effect */
+    outline: none;
+}
+
+.slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); /* Adjusted min-width for slots */
+    gap: 10px;
+    padding: 15px;
+    background-color: #f0f3f6; /* Lighter background for slots grid */
+    border-radius: 10px; /* More rounded */
+    border: 1px solid #e0e0e0;
+    box-shadow: inset 0 1px 5px rgba(0,0,0,0.05); /* Inner shadow */
+}
+
+.slot-item {
+    background-color: #e9ecef; /* Default grey for unavailable */
+    color: #666;
+    padding: 10px; /* More padding */
+    border-radius: 6px; /* Rounded corners */
+    text-align: center;
+    cursor: not-allowed;
+    opacity: 0.7;
+    font-weight: 500;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.slot-item.available {
+    background-color: #d4edda; /* Light green for available */
+    color: #155724; /* Dark green text */
+    cursor: pointer;
+    opacity: 1;
+    border: 1px solid #c3e6cb;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.slot-item.available:hover {
+    background-color: #c3e6cb; /* Darker green on hover */
+    transform: translateY(-2px); /* Slight lift */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.slot-item.selected {
+    background-color: #3498db; /* Blue for selected slot */
+    color: white;
+    border-color: #2980b9;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3); /* Blue ring effect */
+    transform: scale(1.02); /* Slight scale up */
+}
+
+.btn.primary-btn { /* Style for the submit button */
+    padding: 14px 30px; /* More padding */
+    font-size: 1.1rem; /* Larger font */
+    border-radius: 10px; /* More rounded */
+    box-shadow: 0 6px 15px rgba(231, 76, 60, 0.35); /* Stronger red shadow */
+}
+
+.btn.primary-btn:hover {
+    transform: translateY(-3px); /* More pronounced lift */
+    box-shadow: 0 8px 20px rgba(231, 76, 60, 0.45);
+}
+
+/* Message box (reused from dashboard.css, make it consistent) */
+.message {
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    font-size: 0.95rem;
+}
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Mobile specific CSS is in booking-mobile.css */

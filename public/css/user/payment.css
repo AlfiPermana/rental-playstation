@@ -1,0 +1,499 @@
+/* public/css/user/payment.css */
+
+/* --- General & Layout --- */
+/* Menggunakan gaya dasar dari dashboard.css */
+body {
+    font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    line-height: 1.6;
+    color: #34495e; /* Darker text for readability */
+    background-color: #f8f9fa; /* Lighter, clean background */
+}
+
+.user-wrapper {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* Sidebar and Main Header styles inherited from dashboard.css */
+
+.payment-details-section {
+    padding: 40px;
+    background-color: #f8f9fa; /* Light background for the section */
+    border-radius: 12px;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.08); /* More prominent section shadow */
+    min-height: calc(100vh - 180px); 
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    position: relative; 
+    overflow: hidden;
+}
+
+/* Background gradient for the section */
+.payment-details-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #e0f2f7 0%, #cce7ed 100%); /* Light blue gradient */
+    opacity: 0.2; /* More subtle transparency */
+    z-index: 0;
+}
+
+.payment-card {
+    text-align: center;
+    max-width: 900px; /* Wider card for more space */
+    width: 100%;
+    padding: 50px; 
+    border-radius: 20px; /* Very rounded corners */
+    background-color: #ffffff; 
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25); /* Very prominent, refined shadow */
+    border: none; 
+    position: relative; 
+    z-index: 1; 
+    overflow: hidden; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition on hover (if any parent allows) */
+}
+.payment-card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 25px 70px rgba(0,0,0,0.3);
+}
+
+
+/* Decorative top border/accent on the card */
+.payment-card::before { 
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 12px; /* Thicker accent */
+    background: linear-gradient(90deg, #3498db, #e74c3c); /* Blue to Red gradient accent */
+    border-radius: 20px 20px 0 0; /* Match card radius */
+}
+
+/* Status Indicator (new element) */
+.status-indicator {
+    position: relative;
+    width: 100px; /* Larger circle */
+    height: 100px;
+    background-color: #ecf0f1; 
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: -35px auto 40px; /* Move it up more, center */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Stronger shadow for indicator */
+    z-index: 2; 
+    border: 4px solid #ffffff; /* Thicker white border */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.status-indicator .icon {
+    font-size: 4rem; /* Larger icon size */
+    color: #e74c3c; /* Default pending/warning color */
+    line-height: 1;
+    animation: pulse 2s infinite ease-in-out; /* Subtle pulse animation */
+}
+
+/* Pulse animation for status icon */
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Colors for different statuses (JS will add these classes to .status-indicator) */
+.status-indicator.success { background-color: #d4edda; }
+.status-indicator.success .icon { color: #28a745; animation: none; } /* Remove pulse on success */
+
+.status-indicator.pending { background-color: #ffeeba; }
+.status-indicator.pending .icon { color: #f39c12; }
+
+.status-indicator.failed { background-color: #f8d7da; }
+.status-indicator.failed .icon { color: #dc3545; animation: shake 0.5s ease-in-out; } /* Shake on failure */
+
+/* Shake animation for failed status */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+
+#paymentHeaderTitle {
+    font-size: 3.2rem; /* Even larger heading */
+    color: #34495e;
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+p.instruction {
+    font-size: 1.3rem; /* Larger instruction text */
+    color: #6c757d;
+    margin-bottom: 40px;
+    font-weight: 500;
+    line-height: 1.5;
+    background-color: #ffeeba; /* Light yellow background */
+    padding: 15px 25px;
+    border-radius: 10px;
+    border: 1px solid #ffda8b;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+#countdown {
+    color: #e74c3c; 
+    font-weight: 800; /* Extra bold */
+    font-size: 1.5rem; /* Larger font */
+}
+
+.booking-summary {
+    background-color: #f0f3f6; 
+    padding: 30px; /* More padding */
+    border-radius: 15px; /* More rounded */
+    margin-bottom: 40px;
+    text-align: left;
+    border: none; /* Remove default border */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* Cleaner shadow */
+}
+
+.booking-summary h3 {
+    font-size: 2rem; /* Larger summary heading */
+    color: #34495e;
+    margin-top: 0;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #cfd8dc; /* Solid, thicker border */
+    padding-bottom: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.booking-summary h3 .icon {
+    font-size: 1.1em;
+    color: #3498db; /* Blue icon for summary heading */
+}
+
+.summary-details p {
+    margin: 10px 0; /* More space */
+    font-size: 1.1rem; /* Larger text */
+    color: #343a40;
+}
+.summary-details p strong {
+    color: #212529;
+    font-weight: 700;
+}
+
+.booking-summary .total-amount {
+    font-size: 2.8rem; /* Very large total amount */
+    font-weight: 800;
+    color: #e74c3c; 
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 3px solid #e74c3c; /* Thicker red border for total */
+}
+
+h3 { /* General H3 for section titles like "Pilih Metode Pembayaran" */
+    font-size: 2.5rem; /* Larger section heading */
+    color: #34495e;
+    margin-bottom: 35px;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+h3 .icon { /* Style for the bulb icon and other H3 icons */
+    font-size: 1.2em;
+    line-height: 1;
+    color: #3498db; 
+}
+
+
+.payment-methods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 25px; 
+    margin-bottom: 40px;
+}
+
+.payment-method-card {
+    background-color: #ffffff;
+    padding: 35px; /* More padding */
+    border-radius: 15px; /* More rounded */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12); /* Stronger shadow */
+    text-align: center;
+    border: 1px solid #f0f3f6; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.payment-method-card:hover {
+    transform: translateY(-10px); /* More pronounced lift */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    border-color: #3498db; /* Blue border on hover */
+}
+
+.payment-method-card .method-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px; /* More space */
+}
+
+.payment-method-card .bank-logo {
+    width: 65px; /* Larger logo size */
+    height: 65px;
+    object-fit: contain;
+    border-radius: 50%; 
+    background-color: #ecf0f1; 
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1); /* Shadow for logo itself */
+}
+
+.payment-method-card h4 {
+    font-size: 1.8rem; /* Larger method titles */
+    color: #3498db; 
+    margin: 0;
+    font-weight: 700;
+}
+
+.payment-method-card p {
+    font-size: 1.1rem; /* Larger text */
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.payment-method-card strong {
+    color: #2c3e50;
+    font-size: 1.3rem; /* Larger font for account numbers */
+    font-weight: bold;
+}
+
+.payment-method-card .copy-btn {
+    background-color: #3498db; 
+    color: white;
+    border: none;
+    padding: 12px 25px; /* More padding */
+    border-radius: 10px; /* More rounded */
+    cursor: pointer;
+    font-size: 1rem; /* Larger font */
+    margin-top: 20px; /* More space */
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.payment-method-card .copy-btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 12px rgba(52, 152, 219, 0.3);
+}
+
+.qris-image { /* Removed from normal flow, but keep style in case */
+    max-width: 250px; 
+    height: auto;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    margin: 15px auto;
+    display: block;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.payment-method-card .note {
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: 15px;
+    font-style: italic;
+}
+
+.payment-instructions {
+    background-color: #f0f3f6; 
+    padding: 35px; /* More padding */
+    border-radius: 15px; /* More rounded */
+    margin-bottom: 35px;
+    text-align: left;
+    border: none; /* Remove default border */
+    box-shadow: inset 0 1px 8px rgba(0,0,0,0.05); /* Inner shadow */
+}
+
+.payment-instructions h3 {
+    font-size: 2rem; /* Larger H3 */
+    color: #e74c3c; 
+    margin-top: 0;
+    margin-bottom: 25px; /* More space */
+    border-bottom: 2px dashed #cfd8dc; /* Thicker dashed border */
+    padding-bottom: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.payment-instructions h3 .icon { 
+    font-size: 1.4em; /* Even larger icon */
+    line-height: 1;
+    color: #f39c12; /* Orange for the bulb */
+}
+
+.payment-instructions ul {
+    list-style: none; 
+    padding: 0;
+    margin: 0;
+    color: #34495e;
+}
+
+.payment-instructions ul li {
+    margin-bottom: 12px; /* More space between list items */
+    font-size: 1.1rem; /* Larger font */
+    position: relative;
+    padding-left: 35px; /* More space for custom bullet */
+}
+.payment-instructions ul li::before { 
+    content: '•'; 
+    color: #e74c3c; 
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 1.4rem; /* Larger bullet */
+    line-height: 1;
+}
+
+.payment-instructions .whatsapp-link {
+    color: #25d366; 
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.payment-instructions .whatsapp-link:hover {
+    text-decoration: underline;
+    color: #1a9e4d;
+}
+
+/* --- Upload Proof Section --- */
+.upload-proof-section {
+    background-color: #f0f3f6;
+    padding: 35px;
+    border-radius: 15px; /* More rounded */
+    margin-top: 40px; 
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.08); /* Stronger inner shadow */
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.upload-proof-section h3 { /* Consistent h3 style for upload section */
+    font-size: 2rem; /* Consistent with other section headings */
+    color: #34495e;
+    margin-top: 0;
+    margin-bottom: 25px;
+    border-bottom: 2px dashed #cfd8dc; /* Consistent dashed border */
+    padding-bottom: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.upload-proof-section h3 .icon {
+    font-size: 1.3em;
+    color: #3498db; /* Blue icon for upload heading */
+}
+
+.upload-proof-section .form-group {
+    margin-bottom: 25px; /* More space */
+}
+
+.upload-proof-section .form-group label {
+    font-size: 1.1rem; /* Larger label */
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 10px;
+}
+
+.upload-proof-section input[type="file"] {
+    display: block;
+    width: calc(100% - 24px); /* Match other inputs */
+    padding: 12px;
+    border: 1px solid #dcdfe6;
+    border-radius: 10px; /* More rounded */
+    background-color: white;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+    cursor: pointer;
+    font-size: 1rem;
+    color: #34495e;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.upload-proof-section input[type="file"]:hover {
+    border-color: #3498db;
+}
+/* Custom file input button styling */
+.upload-proof-section input[type="file"]::-webkit-file-upload-button {
+    content: 'Pilih File';
+    display: inline-block;
+    background: #3498db;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 20px;
+    outline: none;
+    white-space: nowrap;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    -webkit-appearance: none; /* Remove default button style */
+}
+.upload-proof-section input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: #2980b9;
+}
+
+
+.upload-proof-section .file-note {
+    font-size: 0.95rem;
+    color: #888;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+.upload-proof-section .btn.primary-btn {
+    padding: 14px 30px; 
+    font-size: 1.1rem; 
+    border-radius: 10px; 
+    box-shadow: 0 6px 15px rgba(231, 76, 60, 0.35); 
+    margin-top: 20px; /* More space */
+    width: auto; 
+}
+.upload-proof-section .btn.primary-btn:hover {
+    transform: translateY(-3px); 
+}
+
+#uploadProofMessage.message { 
+    margin-top: 25px;
+}
+
+/* Re-use .btn and .mt-xx styles from dashboard.css */
+.btn {
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+.btn-primary { 
+    background-color: #e74c3c;
+    color: white;
+}
+.btn-secondary {
+    background-color: transparent;
+    color: #34495e;
+    border: 2px solid #34495e;
+}
+.btn-secondary:hover {
+    background-color: #34495e;
+    color: white;
+}
+.mt-20 { margin-top: 20px; }
+.mt-30 { margin-top: 30px; } 
+.mt-10 { margin-top: 10px; }
+
+/* Mobile specific CSS is in payment-mobile.css */
