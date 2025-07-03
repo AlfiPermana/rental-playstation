@@ -1,53 +1,84 @@
-// public/js/register.js
 document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('registerForm');
     const messageDiv = document.getElementById('message');
 
-    if (registerForm) {
-        registerForm.addEventListener('submit', async (e) => {
-            e.preventDefault(); // Mencegah reload halaman
+    registerForm?.addEventListener('submit', handleRegister);
 
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
+    async function handleRegister(e) {
+        e.preventDefault();
+        
+        const formData = getFormData(e.target);
+        resetMessage(messageDiv);
 
-            messageDiv.textContent = ''; // Bersihkan pesan sebelumnya
-            messageDiv.className = 'message'; // Reset kelas
+        if (!validatePasswords(formData.password, formData.confirmPassword, messageDiv)) {
+            return;
+        }
 
-            if (password !== confirmPassword) {
-                messageDiv.textContent = 'Password dan konfirmasi password tidak cocok.';
-                messageDiv.classList.add('error');
-                return;
-            }
+        try {
+            const response = await registerUser(formData);
+            handleResponse(response, messageDiv);
+        } catch (error) {
+            handleRegistrationError(error, messageDiv);
+        }
+    }
 
-            try {
-                const response = await fetch('/api/auth/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, email, password })
-                });
+    function getFormData(form) {
+        return {
+            username: form.username.value,
+            email: form.email.value,
+            password: form.password.value,
+            confirmPassword: form.confirmPassword.value
+        };
+    }
 
-                const data = await response.json();
+    function resetMessage(element) {
+        element.textContent = '';
+        element.className = 'message';
+    }
 
-                if (response.ok) {
-                    messageDiv.textContent = data.message;
-                    messageDiv.classList.add('success');
-                    // Opsional: Redirect ke halaman login setelah beberapa detik
-                    setTimeout(() => {
-                        window.location.href = '/login';
-                    }, 2000);
-                } else {
-                    messageDiv.textContent = data.message || 'Registrasi gagal. Silakan coba lagi.';
-                    messageDiv.classList.add('error');
-                }
-            } catch (error) {
-                console.error('Error during registration:', error);
-                messageDiv.textContent = 'Terjadi kesalahan. Silakan coba lagi nanti.';
-                messageDiv.classList.add('error');
-            }
+    function validatePasswords(password, confirmPassword, messageElement) {
+        if (password !== confirmPassword) {
+            messageElement.textContent = 'Password dan konfirmasi password tidak cocok.';
+            messageElement.classList.add('error');
+            return false;
+        }
+        return true;
+    }
+
+    async function registerUser({ username, email, password }) {
+        const response = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, email, password })
         });
+        
+        return {
+            ok: response.ok,
+            data: await response.json()
+        };
+    }
+
+    function handleResponse({ ok, data }, messageElement) {
+        if (ok) {
+            showSuccess(messageElement, data.message);
+            setTimeout(() => window.location.href = '/login', 2000);
+        } else {
+            showError(messageElement, data.message || 'Registrasi gagal. Silakan coba lagi.');
+        }
+    }
+
+    function showSuccess(element, message) {
+        element.textContent = message;
+        element.classList.add('success');
+    }
+
+    function showError(element, message) {
+        element.textContent = message;
+        element.classList.add('error');
+    }
+
+    function handleRegistrationError(error, messageElement) {
+        console.error('Registration error:', error);
+        showError(messageElement, 'Terjadi kesalahan. Silakan coba lagi nanti.');
     }
 });

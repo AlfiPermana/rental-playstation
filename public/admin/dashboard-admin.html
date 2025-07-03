@@ -1,76 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - PlayStation Rental</title>
-    <link rel="stylesheet" href="../css/admin/dashboard-admin.css">
-    </head>
-<body>
+    <link rel="stylesheet" href="../css/admin/dashboard-admin.css" />
+  </head>
+  <body>
     <div class="admin-wrapper">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h2><span class="icon">⚙️</span> Admin Panel</h2>
-            </div>
-            <nav class="sidebar-nav">
-                <ul>
-                    <li><a href="dashboard-admin.html" class="active"><span class="icon">🏠</span> Dashboard</a></li>
-                    <li><a href="manage-ps.html"><span class="icon">🎮</span> Manajemen PlayStation</a></li>
-                    <li><a href="manage-bookings.html"><span class="icon">📅</span> Manajemen Booking</a></li>
-                    <li><a href="manage-users.html"><span class="icon">👥</span> Manajemen User</a></li>
-                    <li><a href="reports.html"><span class="icon">📊</span> Laporan</a></li>
-                    <li><a href="#" id="logoutBtn"><span class="icon">➡️</span> Logout</a></li>
-                </ul>
-            </nav>
-        </aside>
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2><span class="icon">⚙️</span> Admin Panel</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <a href="dashboard-admin.html" class="active"
+                ><span class="icon">🏠</span> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="manage-ps.html"
+                ><span class="icon">🎮</span> Manajemen PlayStation</a
+              >
+            </li>
+            <li>
+              <a href="manage-bookings.html"
+                ><span class="icon">📅</span> Manajemen Booking</a
+              >
+            </li>
+            <li>
+              <a href="manage-users.html"
+                ><span class="icon">👥</span> Manajemen User</a
+              >
+            </li>
+            <li>
+              <a href="reports.html"><span class="icon">📊</span> Laporan</a>
+            </li>
+            <li>
+              <a href="#" id="logoutBtn"><span class="icon">➡️</span> Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
 
-        <main class="main-content">
-            <header class="main-header">
-                <h1>Dashboard Admin</h1>
-                <div class="user-info">
-                    <span>Halo, <span id="usernameDisplay">Admin</span>!</span>
-                </div>
-            </header>
+      <main class="main-content">
+        <header class="main-header">
+          <button class="hamburger-btn" id="hamburgerBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <h1>Dashboard Admin</h1>
+          <div class="user-info">
+            <span>Halo, <span id="usernameDisplay">Admin</span>!</span>
+          </div>
+        </header>
 
-            <section class="dashboard-stats-grid">
-                <div class="stat-card">
-                    <div class="card-icon"><span class="icon">🕹️</span></div>
-                    <h3>Total PlayStation</h3>
-                    <p id="totalPs">0</p>
-                </div>
-                <div class="stat-card">
-                    <div class="card-icon"><span class="icon">✅</span></div>
-                    <h3>PS Tersedia</h3>
-                    <p id="availablePs">0</p>
-                </div>
-                <div class="stat-card">
-                    <div class="card-icon"><span class="icon">🗓️</span></div>
-                    <h3>Total Booking</h3>
-                    <p id="totalBookings">0</p>
-                </div>
-                <div class="stat-card">
-                    <div class="card-icon"><span class="icon">⏳</span></div>
-                    <h3>Booking Pending</h3>
-                    <p id="pendingBookings">0</p>
-                </div>
-                 <div class="stat-card">
-                    <div class="card-icon"><span class="icon">👥</span></div>
-                    <h3>Total User</h3>
-                    <p id="totalUsers">0</p>
-                </div>
-            </section>
+        <section class="dashboard-stats-grid">
+          <div class="stat-card">
+            <div class="card-icon"><span class="icon">🕹️</span></div>
+            <h3>Total PlayStation</h3>
+            <p id="totalPs">0</p>
+          </div>
+          <div class="stat-card">
+            <div class="card-icon"><span class="icon">✅</span></div>
+            <h3>PS Tersedia</h3>
+            <p id="availablePs">0</p>
+          </div>
+          <div class="stat-card">
+            <div class="card-icon"><span class="icon">🗓️</span></div>
+            <h3>Total Booking</h3>
+            <p id="totalBookings">0</p>
+          </div>
+          <div class="stat-card">
+            <div class="card-icon"><span class="icon">⏳</span></div>
+            <h3>Booking Pending</h3>
+            <p id="pendingBookings">0</p>
+          </div>
+          <div class="stat-card">
+            <div class="card-icon"><span class="icon">👥</span></div>
+            <h3>Total User</h3>
+            <p id="totalUsers">0</p>
+          </div>
+        </section>
 
-            <section class="recent-activity">
-                <h2><span class="icon">🔔</span> Aktivitas Booking Terbaru</h2>
-                <div id="recentBookings" class="booking-list">
-                    <p>Memuat aktivitas terbaru...</p>
-                </div>
-                <p class="no-recent-activity-message" style="display: none;">Tidak ada aktivitas booking terbaru.</p>
-            </section>
-        </main>
+        <section class="recent-activity">
+          <h2><span class="icon">🔔</span> Aktivitas Booking Terbaru</h2>
+          <div id="recentBookings" class="booking-list">
+            <p>Memuat aktivitas terbaru...</p>
+          </div>
+          <p class="no-recent-activity-message" style="display: none">
+            Tidak ada aktivitas booking terbaru.
+          </p>
+        </section>
+      </main>
     </div>
 
     <script src="../js/main.js"></script>
     <script src="../js/admin/dashboard-admin.js"></script>
-</body>
+  </body>
 </html>

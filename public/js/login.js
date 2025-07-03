@@ -1,49 +1,64 @@
-// public/js/login.js (Versi Awal, kembali ke ini)
 document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('loginForm'); // Kembali mencari 'loginForm'
+    const loginForm = document.getElementById('loginForm');
     const messageDiv = document.getElementById('message');
 
-    if (loginForm) {
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+    loginForm?.addEventListener('submit', handleLogin);
 
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+    async function handleLogin(e) {
+        e.preventDefault();
+        
+        const { username, password } = e.target.elements;
+        resetMessage();
 
-            messageDiv.textContent = '';
-            messageDiv.className = 'message';
-
-            try {
-                const response = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password })
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    messageDiv.textContent = data.message;
-                    messageDiv.classList.add('success');
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('userRole', data.role);
-
-                    if (data.role === 'admin') {
-                        window.location.href = '/admin/dashboard-admin.html';
-                    } else {
-                        window.location.href = '/user/dashboard.html';
-                    }
-                } else {
-                    messageDiv.textContent = data.message || 'Login gagal. Silakan coba lagi.';
-                    messageDiv.classList.add('error');
-                }
-            } catch (error) {
-                console.error('Error during login:', error);
-                messageDiv.textContent = 'Terjadi kesalahan. Silakan coba lagi nanti.';
-                messageDiv.classList.add('error');
+        try {
+            const { ok, data } = await authenticate(username.value, password.value);
+            
+            if (ok) {
+                handleSuccess(data);
+            } else {
+                showError(data.message || 'Login gagal. Silakan coba lagi.');
             }
+        } catch (error) {
+            console.error('Login error:', error);
+            showError('Terjadi kesalahan. Silakan coba lagi nanti.');
+        }
+    }
+
+    async function authenticate(username, password) {
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
         });
+        
+        const data = await response.json();
+        return { ok: response.ok, data };
+    }
+
+    function handleSuccess(data) {
+        showSuccess(data.message);
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userRole', data.role);
+        
+        const redirectPath = data.role === 'admin' 
+            ? '/admin/dashboard-admin.html' 
+            : '/user/dashboard.html';
+        
+        window.location.href = redirectPath;
+    }
+
+    function resetMessage() {
+        messageDiv.textContent = '';
+        messageDiv.className = 'message';
+    }
+
+    function showSuccess(msg) {
+        messageDiv.textContent = msg;
+        messageDiv.classList.add('success');
+    }
+
+    function showError(msg) {
+        messageDiv.textContent = msg;
+        messageDiv.classList.add('error');
     }
 });

@@ -1,108 +1,255 @@
 /* public/css/admin/manage-users.css */
-/* Menggunakan gaya dasar dari dashboard-admin.css */
-
-.user-management-section {
-    padding: 35px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-    border: 1px solid #f0f3f6;
-}
-
-/* Override h2 default agar ikonnya sesuai */
-.user-management-section h2 {
-    color: #34495e;
-    font-size: 2.2rem;
-    margin-bottom: 30px;
-    border-bottom: 2px solid #ecf0f1;
-    padding-bottom: 15px;
-    font-weight: 600;
+:root {
+    --primary: #0072ce; /* PlayStation blue */
+    --primary-light: #4da8ff;
+    --primary-dark: #005ba1;
+    --secondary: #2e2e2e;
+    --accent: #ff4757;
+    --success: #28a745;
+    --warning: #ffc107;
+    --error: #dc3545;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --gray: #6c757d;
+    --light-gray: #e9ecef;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  /* User Management Section */
+  .user-management-section {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 2.5rem;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 2rem;
+    transition: var(--transition);
+  }
+  
+  .user-management-section:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+  
+  .user-management-section h2 {
+    font-size: 1.5rem;
+    color: var(--secondary);
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
-    gap: 12px;
-}
-.user-management-section h2 .icon {
-    font-size: 1.1em;
-    color: #e74c3c; /* Red icon for section headings */
-}
-
-/* Table styling (reused and enhanced from dashboard/history/manage-bookings) */
-.table-container {
+    gap: 1rem;
+    position: relative;
+    padding-bottom: 0.75rem;
+  }
+  
+  .user-management-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--primary);
+    border-radius: 3px;
+  }
+  
+  .user-management-section h2 .icon {
+    font-size: 1.25em;
+    color: var(--primary);
+    transition: transform 0.3s ease;
+  }
+  
+  .user-management-section:hover h2 .icon {
+    transform: scale(1.1);
+  }
+  
+  /* Table Styles */
+  .table-container {
     overflow-x: auto;
-    margin-top: 25px;
-}
-
-#usersTable {
+    margin: 2rem 0;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  #usersTable {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    background-color: #ffffff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-#usersTable th, #usersTable td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #e0e0e0;
-    color: #34495e;
-    font-size: 1rem;
-}
-
-#usersTable th {
-    background-color: #f0f3f6;
-    color: #2c3e50;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 0.5px;
-}
-#usersTable th:first-child { border-top-left-radius: 10px; }
-#usersTable th:last-child { border-top-right-radius: 10px; }
-
-#usersTable tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-#usersTable tr:hover {
-    background-color: #f5f5f5;
-}
-
-#usersTable tbody tr:last-child td {
-    border-bottom: none;
-}
-#usersTable tbody tr:last-child td:first-child { border-bottom-left-radius: 10px; }
-#usersTable tbody tr:last-child td:last-child { border-bottom-right-radius: 10px; }
-
-#usersTable .action-btns button {
-    background: none;
-    border: 1px solid;
-    cursor: pointer;
-    font-size: 0.9rem;
-    margin-right: 8px;
-    padding: 6px 10px;
-    border-radius: 6px;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    font-weight: 500;
-}
-
-#usersTable .action-btns .delete-btn {
-    color: #dc3545; border-color: #dc3545;
-}
-#usersTable .action-btns .delete-btn:hover { background-color: #dc3545; color: white; transform: translateY(-2px); }
-
-/* Message box (reused from dashboard.css) */
-.message {
-    margin-top: 25px;
-    padding: 15px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     font-size: 0.95rem;
-}
-.message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-.message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-
-/* Mobile specific CSS is in manage-users-mobile.css */
+  }
+  
+  #usersTable thead {
+    background-color: var(--primary);
+    color: white;
+    position: sticky;
+    top: 0;
+  }
+  
+  #usersTable th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+  }
+  
+  #usersTable tbody tr {
+    transition: var(--transition);
+  }
+  
+  #usersTable tbody tr:nth-child(even) {
+    background-color: var(--light);
+  }
+  
+  #usersTable tbody tr:hover {
+    background-color: rgba(0, 114, 206, 0.05);
+  }
+  
+  #usersTable td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--light-gray);
+    vertical-align: middle;
+  }
+  
+  /* Role Badges */
+  .role-badge {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  .role-admin {
+    background-color: #d1ecf1;
+    color: #0c5460;
+  }
+  
+  .role-user {
+    background-color: #d4edda;
+    color: var(--success);
+  }
+  
+  /* Action Buttons */
+  .action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    margin: 0 0.25rem;
+  }
+  
+  .action-btn.edit {
+    background-color: rgba(0, 114, 206, 0.1);
+    color: var(--primary);
+  }
+  
+  .action-btn.edit:hover {
+    background-color: rgba(0, 114, 206, 0.2);
+  }
+  
+  .action-btn.delete {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: var(--error);
+  }
+  
+  .action-btn.delete:hover {
+    background-color: rgba(220, 53, 69, 0.2);
+  }
+  
+  .action-btn.role {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: var(--warning);
+  }
+  
+  .action-btn.role:hover {
+    background-color: rgba(255, 193, 7, 0.2);
+  }
+  
+  /* Message Styles */
+  .message {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    text-align: center;
+    transition: var(--transition);
+  }
+  
+  .message.success {
+    background-color: #d4edda;
+    color: var(--success);
+    border: 1px solid #c3e6cb;
+  }
+  
+  .message.error {
+    background-color: #f8d7da;
+    color: var(--error);
+    border: 1px solid #f5c6cb;
+  }
+  
+  .no-data-message {
+    text-align: center;
+    padding: 2rem;
+    color: var(--gray);
+    font-style: italic;
+    background-color: var(--light);
+    border-radius: var(--border-radius);
+    margin: 1rem 0;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 992px) {
+    .user-management-section {
+      padding: 2rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .user-management-section {
+      padding: 1.5rem;
+    }
+    
+    .user-management-section h2 {
+      font-size: 1.3rem;
+    }
+    
+    #usersTable {
+      font-size: 0.9rem;
+    }
+    
+    #usersTable th,
+    #usersTable td {
+      padding: 0.75rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .user-management-section {
+      padding: 1.25rem;
+    }
+    
+    .action-btn {
+      margin: 0.25rem 0;
+      display: block;
+      width: 100%;
+    }
+    
+    .action-btn + .action-btn {
+      margin-top: 0.5rem;
+    }
+  }
+  
+  /* Animation */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .user-management-section {
+    animation: fadeIn 0.6s ease-out forwards;
+  }

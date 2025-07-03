@@ -1,15 +1,62 @@
 /* public/css/admin/manage-bookings.css */
-/* Menggunakan gaya dasar dari dashboard-admin.css */
+/* Hamburger Menu Styles */
+.hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    z-index: 101;
+}
 
+.hamburger-btn span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--primary);
+    margin: 5px 0;
+    transition: var(--transition);
+}
+
+.hamburger-btn.disabled {
+    pointer-events: none;
+}
+
+.hamburger-btn.disabled span {
+    background-color: var(--gray);
+}
+
+/* Main Header Adjustments */
+.main-header {
+    position: relative;
+    padding-left: 60px; /* Space for hamburger button */
+}
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+}
+
+/* Booking Management Section */
 .booking-management-section {
     padding: 35px;
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.08);
     border: 1px solid #f0f3f6;
+    margin-bottom: 2rem;
 }
 
-/* Override h2 default agar ikonnya sesuai */
 .booking-management-section h2 {
     color: #34495e;
     font-size: 2.2rem;
@@ -21,17 +68,20 @@
     align-items: center;
     gap: 12px;
 }
+
 .booking-management-section h2 .icon {
     font-size: 1.1em;
-    color: #e74c3c; /* Red icon for section headings */
+    color: #e74c3c;
 }
 
+/* Filter Controls */
 .filter-controls-container {
     margin-bottom: 25px;
     display: flex;
-    justify-content: flex-start; /* Align filters to start */
+    justify-content: flex-start;
     align-items: center;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .filter-group {
@@ -55,17 +105,19 @@
     box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
 .filter-group select:focus {
     border-color: #3498db;
     box-shadow: inset 0 1px 3px rgba(0,0,0,0.06), 0 0 0 3px rgba(52, 152, 219, 0.2);
     outline: none;
 }
 
-
-/* Table styling (reused and enhanced from dashboard/history) */
+/* Table Styling */
 .table-container {
     overflow-x: auto;
     margin-top: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 #bookingsTable {
@@ -75,7 +127,6 @@
     background-color: #ffffff;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 #bookingsTable th, #bookingsTable td {
@@ -84,7 +135,7 @@
     border-bottom: 1px solid #e0e0e0;
     color: #34495e;
     font-size: 1rem;
-    vertical-align: middle; /* Align content in middle */
+    vertical-align: middle;
 }
 
 #bookingsTable th {
@@ -95,6 +146,7 @@
     font-size: 0.9rem;
     letter-spacing: 0.5px;
 }
+
 #bookingsTable th:first-child { border-top-left-radius: 10px; }
 #bookingsTable th:last-child { border-top-right-radius: 10px; }
 
@@ -106,48 +158,21 @@
     background-color: #f5f5f5;
 }
 
-/* Remove bottom border for last row to avoid double border with radius */
 #bookingsTable tbody tr:last-child td {
     border-bottom: none;
 }
-/* Apply border-radius to bottom corners of first/last td in last row */
+
 #bookingsTable tbody tr:last-child td:first-child { border-bottom-left-radius: 10px; }
 #bookingsTable tbody tr:last-child td:last-child { border-bottom-right-radius: 10px; }
 
-
-#bookingsTable .proof-link { /* Style for the proof link */
-    display: inline-block;
-    padding: 5px 10px;
-    background-color: #3498db; /* Blue */
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-}
-#bookingsTable .proof-link:hover {
-    background-color: #2980b9; /* Darker blue on hover */
-    transform: translateY(-1px);
-}
-#bookingsTable .proof-link.none { /* Style if no proof uploaded */
-    background-color: #95a5a6; /* Grey */
-    cursor: default;
-    opacity: 0.8;
-}
-#bookingsTable .proof-link.none:hover {
-    transform: none;
-    box-shadow: none;
-}
-
-
+/* Action Buttons */
 #bookingsTable .action-btns {
-    white-space: nowrap; /* Prevent buttons from wrapping */
+    white-space: nowrap;
 }
 
 #bookingsTable .action-btns button {
     background: none;
-    border: 1px solid; /* Add subtle border */
+    border: 1px solid;
     cursor: pointer;
     font-size: 0.9rem;
     margin-right: 8px;
@@ -157,26 +182,29 @@
     font-weight: 500;
 }
 
-#bookingsTable .action-btns .confirm-payment-btn { /* Style for new confirm button */
-    background-color: #28a745; /* Green */
+#bookingsTable .action-btns .confirm-payment-btn {
+    background-color: #28a745;
     color: white;
     border-color: #28a745;
 }
+
 #bookingsTable .action-btns .confirm-payment-btn:hover {
     background-color: #218838;
     transform: translateY(-2px);
 }
-#bookingsTable .action-btns .reject-payment-btn { /* Style for new reject button */
-    background-color: #dc3545; /* Red */
+
+#bookingsTable .action-btns .reject-payment-btn {
+    background-color: #dc3545;
     color: white;
     border-color: #dc3545;
 }
+
 #bookingsTable .action-btns .reject-payment-btn:hover {
     background-color: #c82333;
     transform: translateY(-2px);
 }
 
-/* Reused status tags from dashboard.css */
+/* Status Tags */
 .status-tag {
     padding: 5px 12px;
     border-radius: 20px;
@@ -185,17 +213,47 @@
     display: inline-block;
     letter-spacing: 0.5px;
 }
+
 .status-tag.pending { background-color: #f39c12; color: white; }
-.status-tag.uploaded { background-color: #3498db; color: white; } /* Blue for uploaded status */
+.status-tag.uploaded { background-color: #3498db; color: white; }
 .status-tag.confirmed { background-color: #28a745; color: white; }
-.status-tag.completed { background-color: #337ab7; color: white; } /* Different color for completed */
+.status-tag.completed { background-color: #337ab7; color: white; }
 .status-tag.cancelled { background-color: #dc3545; color: white; }
-.status-tag.paid { background-color: #17a2b8; color: white; } /* Blue for Paid */
+.status-tag.paid { background-color: #17a2b8; color: white; }
 .status-tag.failed { background-color: #dc3545; color: white; }
 .status-tag.refunded { background-color: #6c757d; color: white; }
 
+/* Proof Link */
+#bookingsTable .proof-link {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
 
-.no-data-message { /* Consistent naming for empty state messages */
+#bookingsTable .proof-link:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+}
+
+#bookingsTable .proof-link.none {
+    background-color: #95a5a6;
+    cursor: default;
+    opacity: 0.8;
+}
+
+#bookingsTable .proof-link.none:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Empty State */
+.no-data-message {
     text-align: center;
     color: #888;
     font-style: italic;
@@ -203,7 +261,7 @@
     font-size: 1.1rem;
 }
 
-/* Message box (reused from dashboard.css) */
+/* Message Box */
 .message {
     margin-top: 25px;
     padding: 15px;
@@ -213,7 +271,60 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     font-size: 0.95rem;
 }
+
 .message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
 .message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
 
-/* Mobile specific CSS is in manage-bookings-mobile.css */
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .filter-controls-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .filter-group {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .hamburger-btn {
+        display: block;
+    }
+    
+    .main-header {
+        padding-left: 60px;
+    }
+    
+    .booking-management-section {
+        padding: 25px;
+    }
+    
+    .booking-management-section h2 {
+        font-size: 1.8rem;
+    }
+    
+    /* Show overlay when sidebar is active */
+    .sidebar.active ~ .sidebar-overlay {
+        display: block;
+    }
+}
+
+@media (max-width: 576px) {
+    .booking-management-section {
+        padding: 20px;
+    }
+    
+    .booking-management-section h2 {
+        font-size: 1.5rem;
+    }
+    
+    #bookingsTable th, #bookingsTable td {
+        padding: 10px 8px;
+        font-size: 0.9rem;
+    }
+    
+    .action-btns button {
+        margin-bottom: 5px;
+    }
+}

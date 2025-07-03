@@ -1,71 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profil Pengguna - PlayStation Rental</title>
-    <link rel="stylesheet" href="../css/user/dashboard.css">
-    <link rel="stylesheet" href="../css/user/profile.css">
-    </head>
-<body>
+    <link rel="stylesheet" href="../css/user/dashboard.css" />
+    <link rel="stylesheet" href="../css/user/profile.css" />
+  </head>
+  <body>
     <div class="user-wrapper">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h2><span class="icon">🎮</span> User Panel</h2>
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2><span class="icon">🎮</span> User Panel</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <a href="dashboard.html"
+                ><span class="icon">🏠</span> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="booking.html"
+                ><span class="icon">➕</span> Booking Baru</a
+              >
+            </li>
+            <li>
+              <a href="history.html"
+                ><span class="icon">🗓️</span> Riwayat Booking</a
+              >
+            </li>
+            <li>
+              <a href="profile.html" class="active"
+                ><span class="icon">👤</span> Profil</a
+              >
+            </li>
+            <li>
+              <a href="#" id="logoutBtn"><span class="icon">➡️</span> Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header class="main-header">
+          <button class="hamburger-btn" id="hamburgerBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <h1>Profil Anda</h1>
+        </header>
+
+        <section class="profile-section">
+          <h2><span class="icon">👤</span> Informasi Akun</h2>
+          <form id="profileForm" class="modern-form">
+            <div class="form-group">
+              <label for="username">Username:</label>
+              <input type="text" id="username" name="username" required />
             </div>
-            <nav class="sidebar-nav">
-                <ul>
-                    <li><a href="dashboard.html"><span class="icon">🏠</span> Dashboard</a></li>
-                    <li><a href="booking.html"><span class="icon">➕</span> Booking Baru</a></li>
-                    <li><a href="history.html"><span class="icon">🗓️</span> Riwayat Booking</a></li>
-                    <li><a href="profile.html" class="active"><span class="icon">👤</span> Profil</a></li>
-                    <li><a href="#" id="logoutBtn"><span class="icon">➡️</span> Logout</a></li>
-                </ul>
-            </nav>
-        </aside>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" id="email" name="email" required />
+            </div>
+            <button type="submit" class="btn primary-btn mt-10">
+              Update Profil
+            </button>
+          </form>
+          <div id="profileMessage" class="message"></div>
 
-        <main class="main-content">
-            <header class="main-header">
-                <h1>Profil Anda</h1>
-            </header>
-
-            <section class="profile-section">
-                <h2><span class="icon">👤</span> Informasi Akun</h2>
-                <form id="profileForm" class="modern-form">
-                    <div class="form-group">
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" name="username" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <button type="submit" class="btn primary-btn mt-10">Update Profil</button>
-                </form>
-                <div id="profileMessage" class="message"></div>
-
-                <h2 class="mt-40"><span class="icon">🔑</span> Ubah Password</h2>
-                <form id="passwordForm" class="modern-form">
-                    <div class="form-group">
-                        <label for="currentPassword">Password Saat Ini:</label>
-                        <input type="password" id="currentPassword" name="currentPassword" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="newPassword">Password Baru:</label>
-                        <input type="password" id="newPassword" name="newPassword" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmNewPassword">Konfirmasi Password Baru:</label>
-                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" required>
-                    </div>
-                    <button type="submit" class="btn primary-btn mt-10">Ubah Password</button>
-                </form>
-                <div id="passwordMessage" class="message"></div>
-            </section>
-        </main>
+          <h2 class="mt-40"><span class="icon">🔑</span> Ubah Password</h2>
+          <form id="passwordForm" class="modern-form">
+            <div class="form-group">
+              <label for="currentPassword">Password Saat Ini:</label>
+              <input
+                type="password"
+                id="currentPassword"
+                name="currentPassword"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="newPassword">Password Baru:</label>
+              <input
+                type="password"
+                id="newPassword"
+                name="newPassword"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="confirmNewPassword">Konfirmasi Password Baru:</label>
+              <input
+                type="password"
+                id="confirmNewPassword"
+                name="confirmNewPassword"
+                required
+              />
+            </div>
+            <button type="submit" class="btn primary-btn mt-10">
+              Ubah Password
+            </button>
+          </form>
+          <div id="passwordMessage" class="message"></div>
+        </section>
+      </main>
     </div>
 
     <script src="../js/main.js"></script>
     <script src="../js/user/profile.js"></script>
-</body>
+  </body>
 </html>

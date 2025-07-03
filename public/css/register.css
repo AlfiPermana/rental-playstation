@@ -1,101 +1,362 @@
-/* public/css/register.css */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* Base Styles & Variables */
+:root {
+    --primary: #003791;
+    --primary-dark: #002664;
+    --primary-light: #4d7cff;
+    --accent: #ff0000;
+    --text: #333333;
+    --text-light: #666666;
+    --bg: #f8f9fa;
+    --card-bg: #ffffff;
+    --border-radius: 12px;
+    --shadow: 0 8px 30px rgba(0, 55, 145, 0.1);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  * {
     margin: 0;
-    background-color: #f4f7f6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  
+  /* Register Wrapper */
+  .register-wrapper {
     min-height: 100vh;
-}
-
-.register-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Floating Background Elements */
+  .floating-bg {
+    position: absolute;
     width: 100%;
-    max-width: 450px; /* Slightly wider than login for more fields */
-    padding: 20px;
-}
-
-.register-box {
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    overflow: hidden;
+  }
+  
+  .ps-button {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0, 55, 145, 0.1) 0%, rgba(255, 0, 0, 0.1) 100%);
+    filter: blur(20px);
+    animation: float 15s infinite ease-in-out;
+  }
+  
+  .ps-button:nth-child(1) {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+  }
+  
+  .ps-button:nth-child(2) {
+    top: 60%;
+    left: 70%;
+    animation-delay: -5s;
+  }
+  
+  .ps-button:nth-child(3) {
+    top: 30%;
+    left: 50%;
+    animation-delay: -10s;
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) translateX(0) scale(1);
+    }
+    33% {
+      transform: translateY(-30px) translateX(20px) scale(1.1);
+    }
+    66% {
+      transform: translateY(20px) translateX(-30px) scale(0.9);
+    }
+  }
+  
+  /* Register Container */
+  .register-container {
+    width: 100%;
+    max-width: 480px;
+    perspective: 1000px;
+  }
+  
+  .register-box {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 2.5rem;
+    box-shadow: var(--shadow);
+    transform-style: preserve-3d;
+    transition: var(--transition);
+    animation: fadeInUp 0.6s ease-out;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .register-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--primary), var(--accent));
+    transition: var(--transition);
+  }
+  
+  .register-box:hover::before {
+    width: 6px;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Brand Styles */
+  .ps-brand {
     text-align: center;
-}
-
-.register-box h2 {
-    color: #2c3e50;
-    margin-bottom: 30px;
-    font-size: 2rem;
-}
-
-.form-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #555;
-}
-
-.form-group input {
-    width: calc(100% - 20px); /* Adjust for padding */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    margin-bottom: 2rem;
+    transition: var(--transition);
+  }
+  
+  .ps-brand:hover {
+    transform: translateY(-2px);
+  }
+  
+  .ps-logo {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 1rem;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23003791" d="M8.985 2.596v17.548l3.915 1.261V6.688l3.794-1.261V22.5l5.02-1.688V.063L8.985 2.596zm-5.539 3.72v16.387l3.794 1.26V5.576L3.446 6.315z"/></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: var(--transition);
+  }
+  
+  .ps-brand h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+  }
+  
+  .ps-brand a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  /* Form Styles */
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: var(--text);
+  }
+  
+  .register-form {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  
+  .input-with-icon {
+    position: relative;
+  }
+  
+  .input-with-icon .icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
     font-size: 1rem;
-}
-
-.btn {
+    opacity: 0.5;
+    transition: var(--transition);
+  }
+  
+  input {
     width: 100%;
-    padding: 12px;
-    background-color: #3498db;
+    padding: 1rem 3rem 1rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+    background-color: #f9f9f9;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 2px rgba(0, 55, 145, 0.1);
+    background-color: white;
+  }
+  
+  input:focus ~ .icon {
+    opacity: 1;
+    color: var(--primary);
+  }
+  
+  label {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    color: var(--text-light);
+    font-size: 1rem;
+    pointer-events: none;
+    transition: var(--transition);
+    background-color: #f9f9f9;
+    padding: 0 0.25rem;
+  }
+  
+  input:focus + label,
+  input:not(:placeholder-shown) + label {
+    top: -0.5rem;
+    left: 0.75rem;
+    font-size: 0.75rem;
+    color: var(--primary);
+    background-color: var(--card-bg);
+  }
+  
+  /* Button Styles */
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(to right, var(--primary), var(--primary-dark));
     color: white;
     border: none;
-    border-radius: 5px;
-    font-size: 1.1rem;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.btn:hover {
-    background-color: #2980b9;
-}
-
-.login-link {
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.login-link a {
-    color: #3498db;
+    transition: var(--transition);
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 55, 145, 0.3);
+  }
+  
+  .btn:active {
+    transform: translateY(0);
+  }
+  
+  .btn-icon {
+    margin-left: 0.5rem;
+    transition: var(--transition);
+  }
+  
+  .btn:hover .btn-icon {
+    transform: translateX(3px);
+  }
+  
+  /* Login Link */
+  .login-link {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.875rem;
+  }
+  
+  .login-link a {
+    color: var(--primary);
     text-decoration: none;
-    font-weight: bold;
-}
-
-.login-link a:hover {
+    font-weight: 500;
+    transition: var(--transition);
+  }
+  
+  .login-link a:hover {
+    color: var(--accent);
     text-decoration: underline;
-}
-
-.message {
-    margin-top: 20px;
-    padding: 10px;
-    border-radius: 5px;
-    font-weight: bold;
-}
-
-.message.success {
-    background-color: #d4edda;
-    color: #155724;
-    border-color: #c3e6cb;
-}
-
-.message.error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border-color: #f5c6cb;
-}
+  }
+  
+  /* Message */
+  .message {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: var(--border-radius);
+    text-align: center;
+    font-size: 0.875rem;
+    transition: var(--transition);
+  }
+  
+  .message.success {
+    background-color: rgba(0, 200, 83, 0.1);
+    color: #00a152;
+  }
+  
+  .message.error {
+    background-color: rgba(255, 0, 0, 0.1);
+    color: #d32f2f;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .register-wrapper {
+      padding: 1rem;
+    }
+    
+    .register-box {
+      padding: 2rem 1.5rem;
+    }
+    
+    .ps-logo {
+      width: 50px;
+      height: 50px;
+    }
+    
+    .ps-brand h1 {
+      font-size: 1.5rem;
+    }
+    
+    h2 {
+      font-size: 1.25rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .register-box {
+      padding: 1.5rem 1rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    
+    input {
+      padding: 0.875rem 2.5rem 0.875rem 0.875rem;
+    }
+    
+    .btn {
+      padding: 0.875rem;
+    }
+  }

@@ -67,14 +67,14 @@ app.get('/', (req, res) => {
 // Endpoint untuk login/register
 app.get('/login', (req, res) => {
     if (req.isMobile) {
-        return res.sendFile(path.join(__dirname, '../public/login-mobile.html'));
+        return res.sendFile(path.join(__dirname, '../public/login.html'));
     }
     res.sendFile(path.join(__dirname, '../public/login.html'));
 });
 
 app.get('/register', (req, res) => {
     if (req.isMobile) {
-        return res.sendFile(path.join(__dirname, '../public/register-mobile.html'));
+        return res.sendFile(path.join(__dirname, '../public/register.html'));
     }
     res.sendFile(path.join(__dirname, '../public/register.html'));
 });

@@ -5,21 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sewa PlayStation - Pengalaman Gaming Terbaikmu!</title>
     <link rel="stylesheet" href="css/index.css">
-    </head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
 <body>
     <header>
         <div class="container header-content">
             <h1 class="logo">PS Rental</h1>
-            <nav>
-                <ul>
-                    <li><a href="/">Beranda</a></li>
-                    <li><a href="#features">Fitur</a></li>
-                    <li><a href="#pricing">Harga</a></li>
-                    <li><a href="#how-to-book">Cara Booking</a></li>
-                    <li><a href="#locations">Lokasi</a></li>
-                    <li class="auth-links">
-                        <a href="/login" class="btn btn-secondary">Login</a> <a href="/register" class="btn btn-primary">Daftar Akun</a>
-                        </li>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <nav class="navbar">
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="/" class="nav-link">Beranda</a></li>
+                    <li class="nav-item"><a href="#features" class="nav-link">Fitur</a></li>
+                    <li class="nav-item"><a href="#pricing" class="nav-link">Harga</a></li>
+                    <li class="nav-item"><a href="#how-to-book" class="nav-link">Cara Booking</a></li>
+                    <!-- <li class="nav-item"><a href="#locations" class="nav-link">Lokasi</a></li> -->
+                    <li class="nav-item auth-links">
+                        <a href="/login" class="btn btn-secondary">Login</a>
+                        <a href="/register" class="btn btn-primary">Daftar Akun</a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -62,11 +71,6 @@
                         <p>Pilihan game yang beragam untuk segala genre dan usia.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="icon">📍</div>
-                        <h3>Lokasi Strategis</h3>
-                        <p>Temukan cabang kami dengan mudah di pusat kota.</p>
-                    </div>
-                    <div class="feature-card">
                         <div class="icon">⏰</div>
                         <h3>Booking Online</h3>
                         <p>Pesan slot waktu kapan saja, di mana saja, tanpa antre.</p>
@@ -88,13 +92,12 @@
                             <li>✔️ Konsol PS3 Standard</li>
                             <li>✔️ Pilihan Game PS3</li>
                             <li>✔️ Controller DualShock 3</li>
-                            <li>✔️ Akses Wifi </li>
+                            <li>✔️ Akses Wifi</li>
                         </ul>
                         <a href="/user/login" class="btn btn-primary btn-block">Sewa Sekarang</a>
                     </div>
 
                     <div class="pricing-card best-value">
-                        <!-- <div class="best-value-badge">Best Value</div> -->
                         <div class="card-header">
                             <h3>PlayStation 4</h3>
                             <p class="price">Rp 10.000<span class="per-hour">/Jam</span></p>
@@ -107,20 +110,6 @@
                         </ul>
                         <a href="/user/login" class="btn btn-primary btn-block">Sewa Sekarang</a>
                     </div>
-
-                    <!-- <div class="pricing-card">
-                        <div class="card-header">
-                            <h3>Paket Keluarga</h3>
-                            <p class="price">Rp 50.000<span class="per-hour">/3 Jam</span></p>
-                        </div>
-                        <ul class="features-list">
-                            <li>✔️ Konsol PS4 (Slim/Pro)</li>
-                            <li>✔️ Pilihan Game Keluarga</li>
-                            <li>✔️ 2 Controller DualShock 4</li>
-                            <li>✔️ Harga Lebih Hemat!</li>
-                        </ul>
-                        <a href="/user/login" class="btn btn-primary btn-block">Sewa Sekarang</a>
-                    </div> -->
                 </div>
             </div>
         </section>
@@ -141,37 +130,13 @@
                     </div>
                     <div class="step-card">
                         <div class="step-number">3</div>
-                        <h3>Bayar DP/Full</h3>
-                        <p>Lakukan pembayaran DP atau penuh sesuai ketentuan.</p>
+                        <h3>Lakukan Transaksi</h3>
+                        <p>Lakukan pembayaran sesuai ketentuan.</p>
                     </div>
                     <div class="step-card">
                         <div class="step-number">4</div>
                         <h3>Mainkan!</h3>
                         <p>Datang ke lokasi dan nikmati waktu bermain Anda.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="locations" class="locations-section">
-            <div class="container">
-                <h2>Lokasi Kami</h2>
-                <div class="location-grid">
-                    <div class="location-card">
-                        <img src="/assets/location1.jpg" alt="Cabang Pusat Kota">
-                        <h3>Cabang Pusat Kota</h3>
-                        <p>📍 Jl. Merdeka No. 123, Bandung</p>
-                        <p>📞 (022) 1234567</p>
-                        <p>⏰ 09:00 - 23:00</p>
-                        <a href="https://maps.app.goo.gl/example1" target="_blank" class="btn btn-outline">Lihat Peta</a>
-                    </div>
-                    <div class="location-card">
-                        <img src="/assets/location2.jpg" alt="Cabang Mall ABC">
-                        <h3>Cabang Mall ABC</h3>
-                        <p>📍 Mall ABC, Lantai 3, Jakarta</p>
-                        <p>📞 (021) 9876543</p>
-                        <p>⏰ 10:00 - 22:00</p>
-                        <a href="https://maps.app.goo.gl/example2" target="_blank" class="btn btn-outline">Lihat Peta</a>
                     </div>
                 </div>
             </div>
@@ -186,21 +151,21 @@
             </div>
             <div class="footer-col">
                 <h3>Kontak</h3>
-                <p>Email: info@psrental.com</p>
-                <p>Telepon: +62 812 3456 7890</p>
-                <p>Alamat: Jl. Mawar No. 456, Kota Contoh</p>
+                <p>Email: example@psrental.com</p>
+                <p>Telepon: +62 8584 2964 866</p>
+                <p>Alamat: Jl. Mawar No. 456, Kota Purbalingga</p>
             </div>
             <div class="footer-col">
                 <h3>Follow Kami</h3>
                 <div class="social-icons">
-                    <a href="#"><img src="https://via.placeholder.com/30/ffffff/000000?text=F" alt="Facebook"></a>
-                    <a href="#"><img src="https://via.placeholder.com/30/ffffff/000000?text=I" alt="Instagram"></a>
-                    <a href="#"><img src="https://via.placeholder.com/30/ffffff/000000?text=X" alt="Twitter"></a>
+                    <a href="#"><img src="/assets/fb.png" alt="Facebook"></a>
+                    <a href="#"><img src="/assets/ig.png" alt="Instagram"></a>
+                    <a href="#"><img src="/assets/twiter.png" alt="Twitter"></a>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 PS Rental. All rights reserved.</p>
+            <p>&copy; 2025 PS Rental. All rights reserved.</p>
         </div>
     </footer>
     <script src="js/main.js"></script>

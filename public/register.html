@@ -1,39 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register - PlayStation Rental</title>
-    <link rel="stylesheet" href="css/register.css">
-</head>
-<body>
-    <div class="register-container">
+    <link rel="stylesheet" href="css/register.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="register-wrapper">
+      <div class="register-container">
         <div class="register-box">
-            <h2>Daftar Akun Baru</h2>
-            <form id="registerForm">
-                <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <div class="form-group">
-                    <label for="confirmPassword">Konfirmasi Password:</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" required>
-                </div>
-                <button type="submit" class="btn">Daftar</button>
-            </form>
-            <p class="login-link">Sudah punya akun? <a href="/login">Login di sini</a></p>
-            <div id="message" class="message"></div>
+          <div class="ps-brand">
+            <a href="index.html">
+              <div class="ps-logo"></div>
+            </a>
+            <h1>PS Rental</h1>
+          </div>
+          <h2>Daftar Akun Baru</h2>
+
+          <form id="registerForm" class="register-form">
+            <div class="form-group">
+              <div class="input-with-icon">
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder=" "
+                  required
+                />
+                <label for="username">Username</label>
+                <span class="icon">👤</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="input-with-icon">
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder=" "
+                  required
+                />
+                <label for="email">Email</label>
+                <span class="icon">✉️</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="input-with-icon">
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder=" "
+                  required
+                />
+                <label for="password">Password</label>
+                <!-- <span class="icon">🔒</span>
+                            <button type="button" class="toggle-password">👁️</button> -->
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="input-with-icon">
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  placeholder=" "
+                  required
+                />
+                <label for="confirmPassword">Konfirmasi Password</label>
+                <!-- <span class="icon">🔐</span> -->
+                <!-- <button type="button" class="toggle-password">👁️</button> -->
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              <span class="btn-text">Daftar</span>
+              <span class="btn-icon">→</span>
+            </button>
+          </form>
+
+          <p class="login-link">
+            Sudah punya akun? <a href="/login">Login di sini</a>
+          </p>
+          <div id="message" class="message"></div>
         </div>
+      </div>
+
+      <div class="floating-bg">
+        <div class="ps-button"></div>
+        <div class="ps-button"></div>
+        <div class="ps-button"></div>
+      </div>
     </div>
 
     <script src="js/register.js"></script>
-</body>
+  </body>
 </html>
