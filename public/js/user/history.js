@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <td>${booking.duration_hours} jam</td>
                         <td><span class="status-tag ${booking.status}">${booking.status.toUpperCase()}</span></td>
                         <td class="action-btns">
-                            ${(booking.status === 'pending' || booking.status === 'confirmed') ? `<button class="cancel-btn" data-id="${booking.id}">Batalkan</button>` : ''}
+                            ${(booking.status === 'pending' || booking.status === 'confirmed') ? `<button class="cancel-btn" data-id="${booking.id}"></button>` : ''}
                         </td>
                     `;
                 });
