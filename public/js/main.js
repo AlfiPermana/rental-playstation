@@ -137,8 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Rest of your dashboard functionality remains the same...
   function loadUserData() {
       const userData = {
-          name: 'John Doe',
-          email: 'john.doe@example.com'
+          name: 'Admin',
+          email: 'admin@example.com'
       };
       document.getElementById('usernameDisplay').textContent = userData.name;
       document.getElementById('emailDisplay').textContent = userData.email;
