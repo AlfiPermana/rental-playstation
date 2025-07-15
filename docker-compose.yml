@@ -33,3 +33,17 @@ services:
       - mysql_data:/var/lib/mysql
 
   phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_rental
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: secret
+    ports:
+      - "1296:80"
+    depends_on:
+      - db
+
+
+volumes:
+  mysql_data: # Definisi persistent volume untuk data database
