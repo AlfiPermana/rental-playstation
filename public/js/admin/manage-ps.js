@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const psTypeInput = document.getElementById("psType");
   const psStatusInput = document.getElementById("psStatus");
   const psDescriptionInput = document.getElementById("psDescription");
+  const psPricePerHourInput = document.getElementById("price_per_hour"); // <<< TAMBAHKAN INI: Ambil elemen input harga
+
   const cancelPsFormBtn = document.getElementById("cancelPsFormBtn");
   const formMessage = document.getElementById("formMessage");
   const psTableBody = document.querySelector("#psTable tbody");
@@ -38,6 +40,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     isEditMode = false;
     formTitle.textContent = "Tambah";
     psStatusInput.value = "available"; // Default for new PS
+    // psPricePerHourInput.value = ""; // <<< Opsional: Bersihkan juga nilai harga saat reset
   };
 
   addPsBtn.addEventListener("click", () => {
@@ -59,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         psTableBody.innerHTML = ""; // Clear existing rows
         if (playstations.length === 0) {
           psTableBody.innerHTML =
-            '<tr><td colspan="5">Tidak ada PlayStation yang terdaftar.</td></tr>';
+            '<tr><td colspan="6">Tidak ada PlayStation yang terdaftar.</td></tr>'; // Ubah colspan ke 6
           return;
         }
         playstations.forEach((ps) => {
@@ -68,15 +71,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <td>${ps.id}</td>
                         <td>${ps.name}</td>
                         <td>${ps.type}</td>
-                        <td><span class="status-tag ${
+                        <td>Rp ${Number(ps.price_per_hour).toLocaleString('id-ID')}</td> <td><span class="status-tag ${
                           ps.status
                         }">${ps.status.toUpperCase()}</span></td>
-                        
+                        <td class="action-btns">
+                            <button class="delete-btn" data-id="${ps.id}">Hapus</button>
+                        </td>
                     `;
-                    // <td class="action-btns">
-                    //         <button class="edit-btn" data-id="${ps.id}">Edit</button>
-                    //         <button class="delete-btn" data-id="${ps.id}">Hapus</button>
-                    //     </td>
         });
       } else {
         formMessage.textContent =
@@ -99,10 +100,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     const type = psTypeInput.value;
     const status = psStatusInput.value;
     const description = psDescriptionInput.value;
-
+    const pricePerHour = psPricePerHourInput.value; // <<< AMBIL NILAI HARGA
+console.log(id,name,type,status,description,pricePerHour)
     const token = localStorage.getItem("token");
     let url = "/api/admin/playstations";
     let method = "POST";
+
+    // Validasi harga di frontend
+    if (!pricePerHour || isNaN(parseFloat(pricePerHour)) || parseFloat(pricePerHour) <= 0) {
+        formMessage.textContent = "Harga Per Jam harus berupa angka positif.";
+        formMessage.classList.add("error");
+        return;
+    }
 
     if (isEditMode) {
       url = `/api/admin/playstations/${id}`;
@@ -116,7 +125,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ name, type, status, description }),
+        body: JSON.stringify({ name, type, status, description, price_per_hour: parseFloat(pricePerHour) }), // <<< SERTAKAN HARGA
       });
 
       const data = await response.json();
@@ -158,6 +167,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           psTypeInput.value = ps.type;
           psStatusInput.value = ps.status;
           psDescriptionInput.value = ps.description || "";
+          psPricePerHourInput.value = parseFloat(ps.price_per_hour); // <<< MUAT HARGA SAAT EDIT
         } else {
           formMessage.textContent =
             "Gagal memuat data PlayStation untuk diedit.";

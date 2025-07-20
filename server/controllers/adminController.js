@@ -15,12 +15,22 @@ exports.getAllPlaystations = async (req, res) => {
 };
 
 exports.addPlaystation = async (req, res) => {
-    const { name, type, description } = req.body;
-    if (!name || !type) {
-        return res.status(400).json({ message: 'Name and type are required' });
+    // <<< PERBAIKAN: Ambil price_per_hour dari req.body >>>
+    const { name, type, description, price_per_hour } = req.body; 
+    // <<< AKHIR PERBAIKAN >>>
+
+    if (!name || !type || !price_per_hour) { // <<< PERBAIKAN: Validasi harga juga >>>
+        return res.status(400).json({ message: 'Name, type, and price per hour are required' });
     }
+    // Opsional: validasi tipe data harga di sini juga (sudah ada di frontend manage-ps.js)
+    if (isNaN(parseFloat(price_per_hour)) || parseFloat(price_per_hour) <= 0) {
+        return res.status(400).json({ message: 'Harga per jam harus berupa angka positif.' });
+    }
+
     try {
-        const result = await Playstation.create(name, type, description);
+        // <<< PERBAIKAN: Teruskan price_per_hour ke Playstation.create >>>
+        const result = await Playstation.create(name, type, description, parseFloat(price_per_hour)); 
+        // <<< AKHIR PERBAIKAN >>>
         res.status(201).json({ message: 'PlayStation added successfully', id: result.insertId });
     } catch (error) {
         console.error('Error adding playstation:', error);
@@ -30,12 +40,22 @@ exports.addPlaystation = async (req, res) => {
 
 exports.updatePlaystation = async (req, res) => {
     const { id } = req.params;
-    const { name, type, status, description } = req.body;
-    if (!name || !type || !status) {
-        return res.status(400).json({ message: 'Name, type, and status are required' });
+    // <<< PERBAIKAN: Ambil price_per_hour dari req.body >>>
+    const { name, type, status, description, price_per_hour } = req.body; 
+    // <<< AKHIR PERBAIKAN >>>
+
+    if (!name || !type || !status || !price_per_hour) { // <<< PERBAIKAN: Validasi harga juga >>>
+        return res.status(400).json({ message: 'Name, type, status, and price per hour are required' });
     }
+    // Opsional: validasi tipe data harga
+    if (isNaN(parseFloat(price_per_hour)) || parseFloat(price_per_hour) <= 0) {
+        return res.status(400).json({ message: 'Harga per jam harus berupa angka positif.' });
+    }
+
     try {
-        const result = await Playstation.update(id, name, type, status, description);
+        // <<< PERBAIKAN: Teruskan price_per_hour ke Playstation.update >>>
+        const result = await Playstation.update(id, name, type, status, description, parseFloat(price_per_hour)); 
+        // <<< AKHIR PERBAIKAN >>>
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: 'PlayStation not found' });
         }
@@ -63,7 +83,7 @@ exports.deletePlaystation = async (req, res) => {
 // --- Booking Management ---
 exports.getAllBookings = async (req, res) => {
     try {
-        const bookings = await Booking.getAll(); // Asumsi Booking.getAll() sudah mengambil proof_of_payment_url
+        const bookings = await Booking.getAll(); 
         res.status(200).json(bookings);
     } catch (error) {
         console.error('Error getting bookings:', error);
@@ -74,7 +94,6 @@ exports.getAllBookings = async (req, res) => {
 exports.updateBookingStatus = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
-    // Tambahkan status 'paid', 'failed', 'uploaded', 'refunded' jika ada di ENUM database
     if (!status || !['pending', 'confirmed', 'completed', 'cancelled', 'paid', 'failed', 'uploaded', 'refunded'].includes(status)) {
         return res.status(400).json({ message: 'Invalid status provided' });
     }
@@ -90,12 +109,9 @@ exports.updateBookingStatus = async (req, res) => {
     }
 };
 
-// <<< PENTING: TAMBAHKAN FUNGSI-FUNGSI INI >>>
 exports.confirmPayment = async (req, res) => {
     const { bookingId } = req.params;
     try {
-        // Panggil metode model untuk mengkonfirmasi pembayaran
-        // Metode ini akan mengubah status booking menjadi 'confirmed' dan payment_status menjadi 'paid'
         const result = await Booking.confirmPaymentByAdmin(bookingId);
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: 'Booking tidak ditemukan atau status pembayaran bukan pending/uploaded.' });
@@ -110,8 +126,6 @@ exports.confirmPayment = async (req, res) => {
 exports.rejectPayment = async (req, res) => {
     const { bookingId } = req.params;
     try {
-        // Panggil metode model untuk menolak pembayaran
-        // Metode ini akan mengubah status booking menjadi 'cancelled' dan payment_status menjadi 'failed'
         const result = await Booking.rejectPaymentByAdmin(bookingId);
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: 'Booking tidak ditemukan atau status pembayaran bukan pending/uploaded.' });
@@ -122,7 +136,6 @@ exports.rejectPayment = async (req, res) => {
         res.status(500).json({ message: 'Server error saat menolak pembayaran.' });
     }
 };
-// <<< AKHIR FUNGSI YANG DITAMBAHKAN >>>
 
 
 // --- User Management ---
@@ -155,24 +168,20 @@ exports.getDashboardStats = async (req, res) => {
     try {
         const [totalPs] = await db.execute('SELECT COUNT(*) AS count FROM playstations');
         const [availablePs] = await db.execute("SELECT COUNT(*) AS count FROM playstations WHERE status = 'available'");
-        const [totalBookingsCount] = await db.execute('SELECT COUNT(*) AS count FROM bookings'); // ID jelas
-        const [pendingBookingsCount] = await db.execute("SELECT COUNT(*) AS count FROM bookings WHERE status = 'pending'"); // ID jelas
-        const [totalUsersCount] = await db.execute('SELECT COUNT(*) AS count FROM users'); // ID jelas
+        const [totalBookingsCount] = await db.execute('SELECT COUNT(*) AS count FROM bookings'); 
+        const [pendingBookingsCount] = await db.execute("SELECT COUNT(*) AS count FROM bookings WHERE status = 'pending'"); 
+        const [totalUsersCount] = await db.execute('SELECT COUNT(*) AS count FROM users'); 
 
-        // Total Pendapatan
         const [totalRevenueResult] = await db.execute('SELECT SUM(amount) AS total_sum FROM bookings WHERE payment_status = "paid"');
         const totalRevenue = totalRevenueResult[0].total_sum || 0;
-
-        // Data bulanan tidak lagi diambil jika grafik dihapus
 
         res.status(200).json({
             totalPlaystations: totalPs[0].count,
             availablePlaystations: availablePs[0].count,
-            totalBookingsCount: totalBookingsCount[0].count, // Kirim dengan ID baru
-            pendingBookingsCount: pendingBookingsCount[0].count, // Kirim dengan ID baru
-            totalUsersCount: totalUsersCount[0].count, // Kirim dengan ID baru
+            totalBookingsCount: totalBookingsCount[0].count, 
+            pendingBookingsCount: pendingBookingsCount[0].count, 
+            totalUsersCount: totalUsersCount[0].count, 
             totalRevenue: totalRevenue,
-            // monthlyBookings: monthlyBookingsData // Tidak perlu dikirim jika tidak ada grafik
         });
     } catch (error) {
         console.error('Error getting dashboard stats:', error);
