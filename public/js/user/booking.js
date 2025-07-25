@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const availableSlotsDiv = document.getElementById('availableSlots');
     const bookingForm = document.getElementById('bookingForm');
     const bookingMessage = document.getElementById('bookingMessage');
-    // Pastikan tombol ini memiliki ID 'confirmBookingBtn' di HTML Anda
     const confirmBookingBtn = document.getElementById('confirmBookingBtn'); 
 
     let selectedSlotTime = null; // Variabel untuk menyimpan waktu mulai slot yang dipilih
@@ -28,11 +27,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Fungsi untuk mengupdate status (enabled/disabled) tombol Konfirmasi Booking
     const updateConfirmButtonStatus = () => {
-        // Tombol aktif jika semua kondisi terpenuhi:
-        // 1. PlayStation sudah dipilih (value tidak kosong)
-        // 2. Tanggal booking sudah dipilih (value tidak kosong)
-        // 3. Durasi sudah dipilih (value bukan NaN)
-        // 4. Slot waktu sudah dipilih (selectedSlotTime tidak null)
         if (playstationSelect.value && bookingDateInput.value && !isNaN(parseInt(durationHoursSelect.value)) && selectedSlotTime) {
             confirmBookingBtn.disabled = false; // Aktifkan tombol
         } else {
@@ -50,12 +44,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             const playstations = await response.json();
 
             if (response.ok) {
-                // *** PENTING: Bersihkan semua opsi yang ada (kecuali opsi placeholder) ***
                 playstationSelect.innerHTML = '<option value="">-- Pilih PS --</option>'; 
                 playstations.forEach(ps => {
                     const option = document.createElement('option');
-                    option.value = ps.id; // Nilai opsi adalah ID PlayStation dari database
-                    option.textContent = `${ps.name} (${ps.type})`; // Teks yang ditampilkan (misal: "PS4 Unit 1 (PS4)")
+                    option.value = ps.id; 
+                    option.textContent = `${ps.name} (${ps.type})`; 
                     playstationSelect.appendChild(option);
                 });
             } else {
@@ -65,9 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error('Error fetching PlayStations:', error);
             alert('Terjadi kesalahan saat memuat daftar PlayStation.');
         } finally {
-            // Selalu panggil setelah PS dimuat (berhasil atau gagal)
-            // Agar status tombol dievaluasi ulang
-            updateConfirmButtonStatus();
+            updateConfirmButtonStatus(); 
         }
     };
 
@@ -77,11 +68,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const bookingDate = bookingDateInput.value;
         const duration = parseInt(durationHoursSelect.value);
 
-        // Reset slot yang dipilih dan nonaktifkan tombol konfirmasi saat input berubah
         selectedSlotTime = null;
-        updateConfirmButtonStatus(); // Nonaktifkan tombol saat input berubah
+        updateConfirmButtonStatus(); 
 
-        // Jika salah satu input penting belum terisi, tampilkan pesan default
         if (!playstationId || !bookingDate || isNaN(duration)) {
             availableSlotsDiv.innerHTML = '<p>Pilih PS, tanggal, dan durasi untuk melihat slot.</p>';
             return;
@@ -95,17 +84,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             const slots = await response.json();
 
             if (response.ok) {
-                availableSlotsDiv.innerHTML = ''; // Bersihkan slot yang ada
+                availableSlotsDiv.innerHTML = ''; 
                 if (slots.length === 0) {
                     availableSlotsDiv.innerHTML = '<p>Tidak ada slot tersedia untuk tanggal ini.</p>';
                     return;
                 }
 
                 // Filter slot berdasarkan durasi yang dipilih
+                // CATATAN: Filter utama waktu yang sudah lewat HARUS di backend (Booking.js)
                 const filteredSlots = slots.filter(slot => {
-                    const startTimeHour = parseInt(slot.start.split(':')[0]);
+                    const startTimeHour = parseInt(slot.time.split(':')[0]); // Menggunakan slot.time dari backend
                     const potentialEndTimeHour = startTimeHour + duration;
-                    return potentialEndTimeHour <= 23; // Cek agar tidak melebihi jam tutup (23:00)
+                    return potentialEndTimeHour <= 23; 
                 });
 
                 if (filteredSlots.length === 0) {
@@ -116,15 +106,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 filteredSlots.forEach(slot => {
                     const slotItem = document.createElement('div');
                     slotItem.classList.add('slot-item');
-                    // Hitung dan tampilkan rentang waktu sesuai durasi yang dipilih
-                    const endHour = parseInt(slot.start.split(':')[0]) + duration;
-                    const displayEndTime = `${String(endHour).padStart(2, '0')}:${slot.start.split(':')[1]}`;
-                    slotItem.textContent = `${slot.start.substring(0, 5)} - ${displayEndTime}`;
-
-                    if (slot.available) {
-                        slotItem.classList.add('available'); // Tambahkan kelas 'available' untuk slot yang bisa diklik
-                        slotItem.dataset.startTime = slot.start; // Simpan waktu mulai di data attribute
-                    }
+                    const endHour = parseInt(slot.time.split(':')[0]) + duration;
+                    const displayEndTime = `${String(endHour).padStart(2, '0')}:${slot.time.split(':')[1]}`;
+                    slotItem.textContent = `${slot.time} - ${displayEndTime.substring(0, 5)}`; // Menggunakan slot.time untuk tampilan
+                    // Tambahan: Tambahkan data-end-time jika ingin digunakan untuk validasi lebih lanjut
+                    slotItem.dataset.startTime = slot.time; 
+                    slotItem.classList.add('available'); // Semua slot dari backend dianggap available kecuali ada logic lain
+                    
                     availableSlotsDiv.appendChild(slotItem);
                 });
             } else {
@@ -138,47 +126,36 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- Event Listeners ---
 
-    // Panggil fetchAvailableSlots setiap kali pilihan PlayStation, Tanggal, atau Durasi berubah
     playstationSelect.addEventListener('change', fetchAvailableSlots);
     bookingDateInput.addEventListener('change', fetchAvailableSlots);
     durationHoursSelect.addEventListener('change', fetchAvailableSlots);
 
-    // Menangani klik pada slot waktu
     availableSlotsDiv.addEventListener('click', (e) => {
-        // Hanya proses jika yang diklik adalah elemen dengan kelas 'available'
         if (e.target.classList.contains('available')) {
-            // Hapus kelas 'selected' dari slot yang sebelumnya terpilih (jika ada)
             const previouslySelected = document.querySelector('.slot-item.selected');
             if (previouslySelected) {
                 previouslySelected.classList.remove('selected');
             }
-            // Tambahkan kelas 'selected' ke slot yang baru diklik
             e.target.classList.add('selected');
-            // Simpan waktu mulai slot yang dipilih
             selectedSlotTime = e.target.dataset.startTime;
-            // Update status tombol Konfirmasi Booking
             updateConfirmButtonStatus();
         }
     });
 
-    // --- Hanya Satu Definisi Event Listener untuk Form Submit ---
     bookingForm.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Mencegah reload halaman
-        console.log('Form submitted!'); // Pesan log untuk debugging
+        e.preventDefault(); 
+        console.log('Form submitted!'); 
 
         const playstationId = playstationSelect.value;
         const bookingDate = bookingDateInput.value;
         const durationHours = parseInt(durationHoursSelect.value);
 
-        // Validasi terakhir sebelum mengirim data ke backend
         if (!playstationId || !bookingDate || !selectedSlotTime || isNaN(durationHours)) {
             bookingMessage.textContent = 'Harap lengkapi semua pilihan dan pilih slot waktu.';
             bookingMessage.classList.add('error');
-            return; // Hentikan proses submit
+            return; 
         }
 
-        // Nonaktifkan tombol Konfirmasi Booking saat proses submit dimulai
-        // Untuk mencegah double click dan pengiriman berulang
         confirmBookingBtn.disabled = true;
 
         try {
@@ -203,35 +180,27 @@ document.addEventListener('DOMContentLoaded', async () => {
                 bookingMessage.textContent = data.message;
                 bookingMessage.classList.add('success');
                 
-                // *** PENTING: Penanganan Redirect ke halaman pembayaran Midtrans ***
                 if (data.redirectUrl) {
                     alert('Booking berhasil dibuat. Anda akan diarahkan ke halaman pembayaran.');
-                    window.location.href = data.redirectUrl; // Arahkan ke URL pembayaran dari Midtrans
-                    // Catatan: Setelah redirect, form tidak perlu di-reset di sini
-                    // karena user akan meninggalkan halaman ini.
+                    window.location.href = data.redirectUrl; 
                 } else {
-                    // Jika tidak ada redirectUrl (misal skenario non-pembayaran online atau error lain di backend)
-                    // Atau jika Anda ingin tetap di halaman ini setelah booking sukses tanpa pembayaran online.
                     alert('Booking berhasil dibuat. Silakan tunggu konfirmasi pembayaran.');
-                    // Bersihkan form
                     bookingForm.reset();
                     availableSlotsDiv.innerHTML = '<p>Pilih PS, tanggal, dan durasi untuk melihat slot.</p>';
                     selectedSlotTime = null; 
-                    updateConfirmButtonStatus(); // Nonaktifkan tombol setelah reset form
-                    // Opsional: Redirect ke halaman riwayat booking jika tidak ada pembayaran online
-                    // setTimeout(() => window.location.href = 'history.html', 2000);
+                    updateConfirmButtonStatus();
                 }
 
             } else {
                 bookingMessage.textContent = data.message || 'Booking gagal. Silakan coba lagi.';
                 bookingMessage.classList.add('error');
-                confirmBookingBtn.disabled = false; // Aktifkan kembali tombol jika ada kegagalan
+                confirmBookingBtn.disabled = false; 
             }
         } catch (error) {
             console.error('Error booking PlayStation:', error);
             bookingMessage.textContent = 'Terjadi kesalahan saat booking. Silakan coba lagi nanti.';
             bookingMessage.classList.add('error');
-            confirmBookingBtn.disabled = false; // Aktifkan kembali tombol jika ada error jaringan/lainnya
+            confirmBookingBtn.disabled = false; 
         }
     });
 
@@ -240,15 +209,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Set tanggal minimum untuk input tanggal menjadi hari ini
     const today = new Date();
     const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0 (0-11)
+    const month = String(today.getMonth() + 1).padStart(2, '0');
     const day = String(today.getDate()).padStart(2, '0');
+    
     bookingDateInput.min = `${year}-${month}-${day}`;
+    // Set nilai default tanggal ke hari ini agar fetchAvailableSlots bisa langsung dipicu
+    // Ini penting agar slot muncul saat pertama kali halaman dimuat tanpa perlu user interaksi
+    bookingDateInput.value = `${year}-${month}-${day}`; 
 
     // Muat daftar PlayStation saat halaman pertama dimuat
     fetchPlaystations();
+    // Memanggil fetchAvailableSlots setelah PS dimuat dan tanggal default diatur
+    // Ini memastikan slot muncul saat halaman dimuat
+    playstationSelect.addEventListener('change', fetchAvailableSlots); // Pastikan ini tetap ada
+    // Panggil fetchAvailableSlots secara manual jika playstationSelect sudah ada nilai default
+    // atau setelah fetchPlaystations selesai dan playstationSelect sudah terisi
+    // Agar slot tampil segera setelah PS list dimuat.
+    // Tambahkan penundaan singkat atau panggil setelah fetchPlaystations() selesai
+    // untuk memastikan playstationSelect sudah ada isinya.
 
+    // Panggil fetchAvailableSlots secara eksplisit setelah DOMContentLoaded
+    // Ini akan memicu pengambilan slot jika ada nilai default untuk playstationSelect & bookingDateInput
+    // (misalnya setelah fetchPlaystations() mengisi select PS, dan bookingDateInput sudah ada value)
+    setTimeout(fetchAvailableSlots, 100); // Panggil setelah sedikit tunda untuk DOM/data siap
+    
     // Atur status awal tombol Konfirmasi Booking (harus nonaktif di awal)
-    updateConfirmButtonStatus();
+    updateConfirmButtonStatus(); 
 
     // --- Fungsionalitas Logout ---
 
@@ -256,9 +242,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (logoutBtn) {
         logoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            localStorage.removeItem('token'); // Hapus token
-            localStorage.removeItem('userRole'); // Hapus peran
-            window.location.href = '/login.html'; // Arahkan ke halaman login
+            localStorage.removeItem('token'); 
+            localStorage.removeItem('userRole'); 
+            window.location.href = '/login.html'; 
         });
     }
-}); // Penutup DOMContentLoaded yang benar
+});

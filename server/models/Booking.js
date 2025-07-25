@@ -83,38 +83,69 @@ class Booking {
         return rows;
     }
 
+    // <<< PERBAIKAN DI SINI: static async getAvailableSlots >>>
     static async getAvailableSlots(playstationId, date) {
+        // Konversi tanggal yang dipilih ke format YYYY-MM-DD untuk perbandingan SQL
+        const selectedDate = new Date(date).toISOString().split('T')[0];
+        const now = new Date(); // Waktu saat ini
+        const currentHour = now.getHours();
+        const currentMinutes = now.getMinutes();
+
+        // Ambil semua booking yang sudah ada untuk playstation dan tanggal tersebut
         const [existingBookings] = await db.execute(
-            'SELECT start_time, end_time FROM bookings WHERE playstation_id = ? AND booking_date = ? AND status IN ("pending", "confirmed")',
-            [playstationId, date]
+            'SELECT start_time, duration_hours FROM bookings WHERE playstation_id = ? AND DATE(booking_date) = ? AND (status = "pending" OR status = "confirmed")',
+            [playstationId, selectedDate]
         );
 
-        const openHour = 9;
-        const closeHour = 23;
-        const allPossibleSlots = [];
-        for (let i = openHour; i < closeHour; i++) {
-            const startTime = `${String(i).padStart(2, "0")}:00:00`;
-            const endTime = `${String(i + 1).padStart(2, "0")}:00:00`;
-            allPossibleSlots.push({
-                start: startTime,
-                end: endTime,
-                available: true,
-            });
-        }
+        const openHour = 9; // Jam buka rental (misal: 09:00)
+        const closeHour = 23; // Jam tutup rental (misal: 23:00, yang berarti slot terakhir adalah 22:00-23:00)
 
-        existingBookings.forEach((bookedSlot) => {
-            allPossibleSlots.forEach((possibleSlot) => {
-                if (
-                    bookedSlot.start_time < possibleSlot.end &&
-                    bookedSlot.end_time > possibleSlot.start
-                ) {
-                    possibleSlot.available = false;
+        const allPossibleSlots = [];
+        for (let hour = openHour; hour < closeHour; hour++) {
+            const slotStart = `${String(hour).padStart(2, '0')}:00:00`;
+            const slotEnd = `${String(hour + 1).padStart(2, '0')}:00:00`;
+
+            // --- LOGIKA FILTER WAKTU YANG SUDAH LEWAT (REAL-TIME) ---
+            // Jika tanggal yang dipilih adalah HARI INI, dan jam slot sudah lewat dari jam sekarang,
+            // maka slot ini tidak perlu ditampilkan.
+            if (selectedDate === now.toISOString().split('T')[0]) {
+                if (hour < currentHour || (hour === currentHour && currentMinutes >= 0)) { // Jika jam slot sudah lewat atau sama dengan jam sekarang (menit berapapun)
+                    continue; // Lewati slot ini, jangan masukkan ke allPossibleSlots
                 }
-            });
-        });
-        console.log(allPossibleSlots);
-        return allPossibleSlots.filter((slot) => slot.available);
+            }
+            // --- AKHIR LOGIKA FILTER WAKTU LEWAT ---
+
+            let isBooked = false;
+            for (const booked of existingBookings) {
+                // Konversi waktu booking yang sudah ada ke objek Date untuk perbandingan
+                // Kita perlu tanggal juga untuk membuat objek Date yang valid
+                const bookedStartDateTime = new Date(`${selectedDate}T${booked.start_time}`);
+                const bookedEndDateTime = new Date(bookedStartDateTime.getTime() + booked.duration_hours * 60 * 60 * 1000);
+
+                const possibleSlotStartDateTime = new Date(`${selectedDate}T${slotStart}`);
+                const possibleSlotEndDateTime = new Date(`${selectedDate}T${slotEnd}`);
+
+                // Cek apakah slot yang sedang diiterasi tumpang tindih dengan booking yang sudah ada
+                // Tumpang tindih jika (slotStart < bookedEnd) AND (slotEnd > bookedStart)
+                if (
+                    (possibleSlotStartDateTime < bookedEndDateTime && possibleSlotEndDateTime > bookedStartDateTime)
+                ) {
+                    isBooked = true;
+                    break;
+                }
+            }
+
+            if (!isBooked) {
+                allPossibleSlots.push({
+                    time: slotStart.substring(0, 5), // Kirim format HH:MM ke frontend
+                    // Anda bisa menambahkan status atau info lain jika diperlukan
+                });
+            }
+        }
+        // console.log("Available Slots (Backend):", allPossibleSlots); // Debugging
+        return allPossibleSlots; // Mengembalikan semua slot yang tidak terbooking dan belum lewat
     }
+    // <<< AKHIR PERBAIKAN >>>
 
     static async getBookingDetailsForPayment(bookingId) {
         const [rows] = await db.execute(
@@ -144,10 +175,8 @@ class Booking {
         return result;
     }
 
-    // <<< PENTING: TAMBAHKAN DUA METODE INI >>>
     static async confirmPaymentByAdmin(bookingId) {
         const [result] = await db.execute(
-            // Konfirmasi hanya jika status pembayaran 'pending' atau 'uploaded'
             'UPDATE bookings SET status = ?, payment_status = ? WHERE id = ? AND (payment_status = ? OR payment_status = ?)',
             ['confirmed', 'paid', bookingId, 'pending', 'uploaded']
         );
@@ -156,13 +185,11 @@ class Booking {
 
     static async rejectPaymentByAdmin(bookingId) {
         const [result] = await db.execute(
-            // Tolak hanya jika status pembayaran 'pending' atau 'uploaded'
             'UPDATE bookings SET status = ?, payment_status = ? WHERE id = ? AND (payment_status = ? OR payment_status = ?)',
             ['cancelled', 'failed', bookingId, 'pending', 'uploaded']
         );
         return result;
     }
-    // <<< AKHIR METODE YANG DITAMBAHKAN >>>
 }
 
 module.exports = Booking;
