@@ -1,24 +1,24 @@
 services:
-  app: # Service untuk aplikasi Node.js Anda
-    build: . # Build dari Dockerfile yang ada di direktori saat ini
-    ports:
-      - "3000:3000" # Map port 3000 di host ke port 3000 di container
-    volumes:
-      - .:/app # Mount volume untuk development, agar perubahan kode di host langsung terlihat di container
-      - /app/node_modules # Kecualikan node_modules dari mounting agar tidak menimpa yang sudah diinstal di container
-      - ./public/uploads:/app/public/uploads # Mount folder uploads agar file tetap ada di host
-    environment: # Variabel lingkungan untuk aplikasi Node.js
-      PORT: 3000
-      DB_HOST: db # Nama service database di docker-compose sebagai hostname
-      DB_USER: root # Ambil dari .env file di host
-      DB_PASSWORD: secret # Ambil dari .env file di host
-      DB_NAME: laravel # Ambil dari .env file di host
-      JWT_SECRET: ${JWT_SECRET} # Ambil dari .env file di host
-      APP_URL: http://localhost:3000 # Atau URL yang sesuai jika di deploy
-    depends_on: # Pastikan service 'db' berjalan sebelum 'app'
-      - db
-    env_file: # Memuat variabel lingkungan dari file .env di host ke dalam container (alternatif ke 'environment')
-      - ./.env # Pastikan file .env ada di root project Anda
+  # app: # Service untuk aplikasi Node.js Anda
+  #   build: . # Build dari Dockerfile yang ada di direktori saat ini
+  #   ports:
+  #     - "3000:3000" # Map port 3000 di host ke port 3000 di container
+  #   volumes:
+  #     - .:/app # Mount volume untuk development, agar perubahan kode di host langsung terlihat di container
+  #     - /app/node_modules # Kecualikan node_modules dari mounting agar tidak menimpa yang sudah diinstal di container
+  #     - ./public/uploads:/app/public/uploads # Mount folder uploads agar file tetap ada di host
+  #   environment: # Variabel lingkungan untuk aplikasi Node.js
+  #     PORT: 3000
+  #     DB_HOST: db # Nama service database di docker-compose sebagai hostname
+  #     DB_USER: root # Ambil dari .env file di host
+  #     DB_PASSWORD: secret # Ambil dari .env file di host
+  #     DB_NAME: laravel # Ambil dari .env file di host
+  #     JWT_SECRET: ${JWT_SECRET} # Ambil dari .env file di host
+  #     APP_URL: http://localhost:3000 # Atau URL yang sesuai jika di deploy
+  #   depends_on: # Pastikan service 'db' berjalan sebelum 'app'
+  #     - db
+  #   env_file: # Memuat variabel lingkungan dari file .env di host ke dalam container (alternatif ke 'environment')
+  #     - ./.env # Pastikan file .env ada di root project Anda
 
   db:
     image: mysql:8.0
@@ -29,6 +29,8 @@ services:
       MYSQL_DATABASE: laravel
       MYSQL_USER: laraveluser
       MYSQL_PASSWORD: laravelpass
+    ports:
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 

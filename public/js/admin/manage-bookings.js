@@ -42,13 +42,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                         ? `<a href="${booking.proof_of_payment_url}" target="_blank" class="proof-link">Lihat Bukti</a>`
                         : `<span class="proof-link none">Tidak Ada</span>`;
                     
+                    // Hitung base amount dan final amount
+                    const uniqueCode = booking.payment_code || '000';
+                    const finalAmount = booking.amount;
+                    const baseAmount = finalAmount - parseInt(uniqueCode);
+                    
                     row.innerHTML = `
                         <td>${booking.id}</td>
-                        <td>${booking.username}</td>
+                        <td><span style="font-weight: bold; color: #dc3545; background: #f8f9fa; padding: 3px 6px; border-radius: 3px;">${uniqueCode}</span></td>
+                        <td>${booking.username || booking.customer_name || '-'}</td>
                         <td>${booking.playstation_name} (${booking.playstation_type})</td>
                         <td>${bookingDate} ${startTime} - ${endTime}</td>
                         <td>${booking.duration_hours} jam</td>
-                        <td>Rp ${Number(booking.amount).toLocaleString('id-ID')}</td>
+                        <td>Rp ${Number(baseAmount).toLocaleString('id-ID')}</td>
+                        <td>Rp ${Number(finalAmount).toLocaleString('id-ID')}</td>
                         <td><span class="status-tag ${booking.status}">${booking.status.toUpperCase()}</span></td>
                         <td><span class="status-tag ${booking.payment_status}">${booking.payment_status.toUpperCase()}</span></td>
                         <td>${proofHtml}</td>

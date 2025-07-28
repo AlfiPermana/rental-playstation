@@ -24,5 +24,6 @@ router.delete('/users/:id', adminController.deleteUser);
 
 // Reports/Dashboard Stats
 router.get('/stats', adminController.getDashboardStats);
+router.get('/reports/summary', adminController.getBusinessSummary);
 
 module.exports = router;

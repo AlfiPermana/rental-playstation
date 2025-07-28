@@ -188,3 +188,46 @@ exports.getDashboardStats = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+// --- Business Summary (Rekap Harian, Mingguan, Bulanan, Total) ---
+exports.getBusinessSummary = async (req, res) => {
+    try {
+        // Hari ini
+        const [todayBookings] = await db.execute(`SELECT COUNT(*) as booking_count FROM bookings WHERE DATE(created_at) = CURDATE()`);
+        const [todayRevenue] = await db.execute(`SELECT COALESCE(SUM(amount), 0) as total_revenue FROM bookings WHERE DATE(created_at) = CURDATE() AND payment_status = 'paid'`);
+
+        // Minggu ini
+        const [weekBookings] = await db.execute(`SELECT COUNT(*) as booking_count FROM bookings WHERE YEARWEEK(created_at) = YEARWEEK(NOW())`);
+        const [weekRevenue] = await db.execute(`SELECT COALESCE(SUM(amount), 0) as total_revenue FROM bookings WHERE YEARWEEK(created_at) = YEARWEEK(NOW()) AND payment_status = 'paid'`);
+
+        // Bulan ini
+        const [monthBookings] = await db.execute(`SELECT COUNT(*) as booking_count FROM bookings WHERE YEAR(created_at) = YEAR(NOW()) AND MONTH(created_at) = MONTH(NOW())`);
+        const [monthRevenue] = await db.execute(`SELECT COALESCE(SUM(amount), 0) as total_revenue FROM bookings WHERE YEAR(created_at) = YEAR(NOW()) AND MONTH(created_at) = MONTH(NOW()) AND payment_status = 'paid'`);
+
+        // Total keseluruhan
+        const [totalBookings] = await db.execute(`SELECT COUNT(*) as booking_count FROM bookings`);
+        const [totalRevenue] = await db.execute(`SELECT COALESCE(SUM(amount), 0) as total_revenue FROM bookings WHERE payment_status = 'paid'`);
+
+        res.json({
+            today: {
+                bookings: todayBookings[0].booking_count,
+                revenue: todayRevenue[0].total_revenue
+            },
+            thisWeek: {
+                bookings: weekBookings[0].booking_count,
+                revenue: weekRevenue[0].total_revenue
+            },
+            thisMonth: {
+                bookings: monthBookings[0].booking_count,
+                revenue: monthRevenue[0].total_revenue
+            },
+            total: {
+                bookings: totalBookings[0].booking_count,
+                revenue: totalRevenue[0].total_revenue
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching business summary:', error);
+        res.status(500).json({ message: 'Server error saat mengambil data rekap bisnis' });
+    }
+};

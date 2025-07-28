@@ -3,10 +3,14 @@ const db = require("../config/db");
 class Booking {
     static async getAll() {
         const [rows] = await db.execute(`
-            SELECT b.*, u.username, p.name AS playstation_name, p.type AS playstation_type,
-            b.proof_of_payment_url -- Pastikan kolom ini sudah ada di tabel bookings
+            SELECT b.*, 
+                   COALESCE(u.username, b.customer_name) AS customer_name,
+                   COALESCE(u.email, b.customer_email) AS customer_email,
+                   b.customer_phone,
+                   p.name AS playstation_name, p.type AS playstation_type,
+                   b.proof_of_payment_url
             FROM bookings b
-            JOIN users u ON b.user_id = u.id
+            LEFT JOIN users u ON b.user_id = u.id
             JOIN playstations p ON b.playstation_id = p.id
             ORDER BY b.created_at DESC
         `);
@@ -16,9 +20,13 @@ class Booking {
     static async getById(id) {
         const [rows] = await db.execute(
             `
-            SELECT b.*, u.username, p.name AS playstation_name, p.type AS playstation_type
+            SELECT b.*, 
+                   COALESCE(u.username, b.customer_name) AS customer_name,
+                   COALESCE(u.email, b.customer_email) AS customer_email,
+                   b.customer_phone,
+                   p.name AS playstation_name, p.type AS playstation_type
             FROM bookings b
-            JOIN users u ON b.user_id = u.id
+            LEFT JOIN users u ON b.user_id = u.id
             JOIN playstations p ON b.playstation_id = p.id
             WHERE b.id = ?
             `,
@@ -52,8 +60,14 @@ class Booking {
         durationHours,
         amount
     ) {
+        // Generate unique payment code (3 digit)
+        const uniqueCode = this.generatePaymentCode();
+        
+        // Calculate final amount with unique code
+        const finalAmount = this.calculateFinalAmount(amount, uniqueCode);
+        
         const [result] = await db.execute(
-            "INSERT INTO bookings (user_id, playstation_id, booking_date, start_time, end_time, duration_hours, amount, status, payment_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO bookings (user_id, playstation_id, booking_date, start_time, end_time, duration_hours, amount, status, payment_status, payment_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             [
                 userId,
                 playstationId,
@@ -61,12 +75,107 @@ class Booking {
                 startTime,
                 endTime,
                 durationHours,
-                amount,
+                finalAmount, // Use final amount instead of base amount
                 "pending",
                 "pending",
+                uniqueCode, // Store the unique code
             ]
         );
         return result;
+    }
+
+    // Method baru untuk guest booking (tanpa login)
+    static async createGuestBooking(
+        playstationId,
+        bookingDate,
+        startTime,
+        endTime,
+        durationHours,
+        amount,
+        customerName,
+        customerEmail,
+        customerPhone
+    ) {
+        try {
+            console.log('createGuestBooking called with params:', {
+                playstationId, bookingDate, startTime, endTime, durationHours, amount, customerName, customerEmail, customerPhone
+            });
+            
+            // Generate unique payment code (3 digit)
+            console.log('About to call generatePaymentCode...');
+            const uniqueCode = this.generatePaymentCode();
+            console.log('Generated unique code:', uniqueCode);
+            
+            // Calculate final amount with unique code
+            const finalAmount = this.calculateFinalAmount(amount, uniqueCode);
+            console.log('Final amount with unique code:', finalAmount);
+            
+            const [result] = await db.execute(
+                "INSERT INTO bookings (playstation_id, booking_date, start_time, end_time, duration_hours, amount, status, payment_status, customer_name, customer_email, customer_phone, payment_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                [
+                    playstationId,
+                    bookingDate,
+                    startTime,
+                    endTime,
+                    durationHours,
+                    finalAmount, // Use final amount instead of base amount
+                    "pending",
+                    "pending",
+                    customerName,
+                    customerEmail,
+                    customerPhone,
+                    uniqueCode, // Store the unique code
+                ]
+            );
+            console.log('Booking created with unique code:', uniqueCode, 'and final amount:', finalAmount);
+            return result;
+        } catch (error) {
+            console.error('Error in createGuestBooking:', error);
+            throw error;
+        }
+    }
+
+    // Method untuk generate payment code (3 digit unik: 000-999)
+    static generatePaymentCode() {
+        const uniqueCode = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+        console.log('generatePaymentCode called, unique code:', uniqueCode);
+        return uniqueCode;
+    }
+
+    // Method untuk menghitung total pembayaran dengan kode unik
+    static calculateFinalAmount(baseAmount, uniqueCode) {
+        const finalAmount = baseAmount + parseInt(uniqueCode);
+        console.log(`calculateFinalAmount: ${baseAmount} + ${uniqueCode} = ${finalAmount}`);
+        return finalAmount;
+    }
+
+    // Method untuk mencari booking berdasarkan email dan nomor telepon
+    static async findByEmailAndPhone(email, phone) {
+        const [rows] = await db.execute(
+            `
+            SELECT b.*, p.name AS playstation_name, p.type AS playstation_type
+            FROM bookings b
+            JOIN playstations p ON b.playstation_id = p.id
+            WHERE b.customer_email = ? AND b.customer_phone = ?
+            ORDER BY b.booking_date DESC, b.start_time DESC
+            `,
+            [email, phone]
+        );
+        return rows;
+    }
+
+    // Method untuk mencari booking berdasarkan booking ID (untuk tracking)
+    static async findByBookingId(bookingId) {
+        const [rows] = await db.execute(
+            `
+            SELECT b.*, p.name AS playstation_name, p.type AS playstation_type
+            FROM bookings b
+            JOIN playstations p ON b.playstation_id = p.id
+            WHERE b.id = ?
+            `,
+            [bookingId]
+        );
+        return rows[0];
     }
 
     static async getBookingsByUserId(userId) {

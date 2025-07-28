@@ -1,0 +1,408 @@
+/* Booking Page Styles */
+.booking-container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.booking-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.booking-header h1 {
+    color: #333;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.booking-header p {
+    color: #666;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
+
+/* Booking Info Section */
+.booking-info {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    font-size: 0.9em;
+    color: #495057;
+}
+
+.info-item .icon {
+    font-size: 1.2em;
+}
+
+.booking-form {
+    display: grid;
+    gap: 25px;
+}
+
+.form-section {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 12px;
+    border-left: 4px solid #007bff;
+    transition: all 0.3s ease;
+}
+
+.form-section:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.form-section h3 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.4em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Form Row for side-by-side inputs */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95em;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.form-help {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.85em;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* PlayStation Info Card */
+.playstation-info {
+    margin-top: 15px;
+}
+
+.info-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    text-align: center;
+}
+
+.info-card h4 {
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 1.1em;
+}
+
+.info-card p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.info-card p:last-child {
+    font-weight: 600;
+    color: #007bff;
+    font-size: 1em;
+}
+
+/* Slots Grid */
+.slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.slots-placeholder {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 30px;
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    color: #6c757d;
+}
+
+.slots-placeholder .icon {
+    font-size: 2em;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.slots-placeholder p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.slot-item {
+    padding: 12px 8px;
+    text-align: center;
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.9em;
+}
+
+.slot-item:hover {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.slot-item.selected {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Price Section */
+.price-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-left-color: #667eea;
+}
+
+.price-section h3 {
+    color: white;
+}
+
+.price-breakdown {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.price-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.price-item:last-child {
+    border-bottom: none;
+}
+
+.price-item.total {
+    font-weight: 600;
+    font-size: 1.1em;
+    padding-top: 15px;
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.payment-info {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 0.9em;
+}
+
+.payment-info p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Button Styles */
+.btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    width: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+}
+
+.btn-primary:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn-icon {
+    font-size: 1.1em;
+}
+
+/* Message Styles */
+.message {
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-weight: 500;
+    text-align: center;
+}
+
+.message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.message.info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* Back Link */
+.back-link {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.back-link a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.back-link a:hover {
+    color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .booking-container {
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    .booking-header h1 {
+        font-size: 2em;
+    }
+
+    .booking-info {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .slots-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+    }
+
+    .form-section {
+        padding: 20px;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .booking-container {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .booking-header h1 {
+        font-size: 1.8em;
+    }
+
+    .slots-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 8px;
+    }
+
+    .btn {
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+
+    .price-breakdown {
+        padding: 15px;
+    }
+
+    .payment-info {
+        padding: 12px;
+        font-size: 0.85em;
+    }
+} 

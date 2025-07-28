@@ -1,191 +1,233 @@
-/* public/css/admin/reports.css */
+/* CSS Modern untuk Laporan Admin (Tanpa Merubah Sidebar) */
 :root {
-  --primary: #0072ce; /* PlayStation blue */
-  --primary-light: #4da8ff;
-  --primary-dark: #005ba1;
+  --primary: #3B82F6;
+  --primary-dark: #2563EB;
+  --primary-light: #93C5FD;
   --secondary: #2e2e2e;
-  --accent: #ff4757;
-  --success: #28a745;
-  --warning: #ffc107;
-  --error: #dc3545;
-  --light: #f8f9fa;
-  --dark: #212529;
-  --gray: #6c757d;
-  --light-gray: #e9ecef;
-  --border-radius: 12px;
-  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --accent: #F59E0B;
+  --danger: #EF4444;
+  --light: #F8FAFC;
+  --dark: #1E293B;
+  --gray: #64748B;
+  --light-gray: #E2E8F0;
+  --radius: 8px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --transition: all 0.2s ease;
 }
 
-/* Hamburger Button Styles */
-.hamburger-btn {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 10px;
-  position: absolute;
-  left: 15px;
-  top: 15px;
-  z-index: 101;
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  background-color: var(--light);
 }
 
-.hamburger-btn span {
-  display: block;
-  width: 25px;
-  height: 3px;
-  background-color: var(--primary);
-  margin: 5px 0;
-  transition: var(--transition);
-}
-
-.hamburger-btn.disabled {
-  pointer-events: none;
-}
-
-.hamburger-btn.disabled span {
-  background-color: var(--gray);
-}
-
-/* Main Header Adjustments */
 .main-header {
-  position: relative;
-  padding-left: 60px; /* Space for hamburger button */
-}
-
-/* Sidebar Overlay */
-.sidebar-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 99;
-}
-
-/* Reports Section Styles */
-.reports-section {
-  background-color: white;
-  border-radius: var(--border-radius);
-  padding: 2.5rem;
-  box-shadow: var(--box-shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 2rem;
-  transition: var(--transition);
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--light-gray);
 }
 
-.reports-section:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+.main-header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+  text-align: center;
+  padding-right: 40px;
 }
 
-.reports-section h2 {
-  font-size: 1.5rem;
-  color: var(--secondary);
-  margin-bottom: 1.5rem;
+/* Refresh Button */
+.refresh-btn {
+  background-color: white;
+  color: var(--primary);
+  border: 1px solid var(--light-gray);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 1rem;
-  position: relative;
-  padding-bottom: 0.75rem;
+  gap: 0.5rem;
+  transition: var(--transition);
 }
 
-.reports-section h2::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 50px;
-  height: 3px;
+.refresh-btn:hover {
   background-color: var(--primary);
-  border-radius: 3px;
+  color: white;
+  border-color: var(--primary);
 }
 
-.reports-section h2 .icon {
-  font-size: 1.25em;
-  color: var(--primary);
-  transition: transform 0.3s ease;
+.refresh-btn svg {
+  width: 16px;
+  height: 16px;
 }
 
-.reports-section:hover h2 .icon {
-  transform: scale(1.1);
+/* Reports Section */
+.reports-section {
+  background-color: white;
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2rem;
 }
 
-/* Report Cards Grid */
-.report-cards-grid {
+/* Business Summary Cards */
+.business-summary-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.summary-card {
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+}
+
+.card-content {
+  position: relative;
+  z-index: 1;
+}
+
+.summary-card h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+
+.stat-value {
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+
+.date-range {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  font-style: italic;
+  display: block;
+  margin-top: 1rem;
+}
+
+/* Card Colors */
+.summary-card.today {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+}
+
+.summary-card.week {
+  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+}
+
+.summary-card.month {
+  background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%);
+}
+
+.summary-card.total {
+  background: linear-gradient(135deg, var(--secondary) 0%, #059669 100%);
+}
+
+/* Report Cards */
+.report-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.5rem;
   margin: 2rem 0;
 }
 
 .report-card {
   background-color: white;
-  border-radius: var(--border-radius);
+  border-radius: var(--radius);
   padding: 1.5rem;
-  box-shadow: var(--box-shadow);
+  box-shadow: var(--shadow-sm);
   transition: var(--transition);
-  border-top: 4px solid var(--primary);
-  position: relative;
-  overflow: hidden;
-}
-
-.report-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, rgba(0, 114, 206, 0.03) 0%, rgba(0, 114, 206, 0.01) 100%);
-  z-index: 0;
+  border: 1px solid var(--light-gray);
 }
 
 .report-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card-icon {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
 }
 
 .report-card h3 {
-  font-size: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
   color: var(--gray);
-  margin-bottom: 1rem;
-  position: relative;
-  z-index: 1;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .report-card p {
-  font-size: 1.75rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 600;
   color: var(--dark);
-  position: relative;
-  z-index: 1;
+  margin: 0;
 }
 
+/* Card Specific Styles */
+.report-card:nth-child(1) .card-icon {
+  color: var(--secondary);
+}
 .report-card:nth-child(1) p {
-  color: var(--success);
+  color: var(--secondary);
 }
 
+.report-card:nth-child(2) .card-icon {
+  color: var(--primary);
+}
 .report-card:nth-child(2) p {
   color: var(--primary);
 }
 
+.report-card:nth-child(3) .card-icon {
+  color: var(--accent);
+}
 .report-card:nth-child(3) p {
-  color: var(--warning);
+  color: var(--accent);
 }
 
+.report-card:nth-child(4) .card-icon {
+  color: var(--danger);
+}
 .report-card:nth-child(4) p {
-  color: var(--accent);
+  color: var(--danger);
 }
 
 /* Message Styles */
 .message {
   margin-top: 1.5rem;
   padding: 1rem;
-  border-radius: var(--border-radius);
+  border-radius: var(--radius);
   font-weight: 500;
   text-align: center;
-  transition: var(--transition);
 }
 
 .message.success {
@@ -196,83 +238,41 @@
 
 .message.error {
   background-color: #f8d7da;
-  color: var(--error);
+  color: var(--danger);
   border: 1px solid #f5c6cb;
 }
 
 /* Responsive Styles */
-@media (max-width: 992px) {
-  .reports-section {
-      padding: 2rem;
-  }
-  
-  .report-cards-grid {
+@media (max-width: 1024px) {
+  .business-summary-cards {
       grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .hamburger-btn {
-      display: block;
-  }
-  
-  .reports-section {
+  .main-content {
       padding: 1.5rem;
   }
   
-  .reports-section h2 {
-      font-size: 1.3rem;
-  }
-  
-  .report-card {
-      padding: 1.25rem;
-  }
-  
-  .report-card p {
-      font-size: 1.5rem;
-  }
-  
-  /* Show overlay when sidebar is active */
-  .sidebar.active ~ .sidebar-overlay {
-      display: block;
-  }
-}
-
-@media (max-width: 576px) {
-  .reports-section {
-      padding: 1.25rem;
-  }
-  
+  .business-summary-cards,
   .report-cards-grid {
       grid-template-columns: 1fr;
   }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+      padding: 1rem;
+  }
   
-  .report-card h3 {
-      font-size: 0.95rem;
+  .main-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
   }
   
-  .report-card p {
-      font-size: 1.25rem;
+  .refresh-btn {
+      width: 100%;
+      justify-content: center;
   }
 }
-
-/* Animation */
-@keyframes fadeInUp {
-  from {
-      opacity: 0;
-      transform: translateY(20px);
-  }
-  to {
-      opacity: 1;
-      transform: translateY(0);
-  }
-}
-
-.report-card {
-  animation: fadeInUp 0.6s ease-out forwards;
-}
-
-.report-card:nth-child(1) { animation-delay: 0.1s; }
-.report-card:nth-child(2) { animation-delay: 0.2s; }
-.report-card:nth-child(3) { animation-delay: 0.3s; }
-.report-card:nth-child(4) { animation-delay: 0.4s; }
