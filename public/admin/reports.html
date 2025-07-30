@@ -1,135 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Laporan - Admin</title>
-    <link rel="stylesheet" href="../css/admin/dashboard-admin.css"> 
-    <link rel="stylesheet" href="../css/admin/reports.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" href="../css/admin/dashboard-admin.css" />
+    <link rel="stylesheet" href="../css/admin/reports.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div class="admin-wrapper">
-        <!-- SIDEBAR TIDAK DIUBAH -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h2><span class="icon">⚙️</span> Admin Panel</h2>
+      <!-- SIDEBAR TIDAK DIUBAH -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2><span class="icon">⚙️</span> Admin Panel</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <a href="dashboard-admin.html"
+                ><span class="icon">🏠</span> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="manage-ps.html"
+                ><span class="icon">🎮</span> Manajemen PlayStation</a
+              >
+            </li>
+            <li>
+              <a href="manage-bookings.html"
+                ><span class="icon">📅</span> Manajemen Booking</a
+              >
+            </li>
+            <li>
+              <a href="manage-users.html"
+                ><span class="icon">👥</span> Manajemen User</a
+              >
+            </li>
+            <li>
+              <a href="reports.html" class="active"
+                ><span class="icon">📊</span> Laporan</a
+              >
+            </li>
+            <li>
+              <a href="#" id="logoutBtn"><span class="icon">➡️</span> Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header class="main-header">
+          <button class="hamburger-btn" id="hamburgerBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <h1>Laporan Pendapatan</h1>
+        </header>
+
+        <section class="reports-section">
+          <!-- Rekap Ringkasan Bisnis Periode -->
+          <div class="business-summary-cards">
+            <div class="summary-card today">
+                <div class="card-icon">📅</div>
+              <div class="card-content">
+                <h3>Hari Ini</h3>
+                <div class="stat-item">
+                  <span class="stat-label">Jumlah Booking</span>
+                  <span class="stat-value" id="todayBookings">-</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Total Pendapatan</span>
+                  <span class="stat-value" id="todayRevenue">Rp 0</span>
+                </div>
+                <span class="date-range" id="todayRange">Loading...</span>
+              </div>
             </div>
-            <nav class="sidebar-nav">
-                <ul>
-                    <li><a href="dashboard-admin.html"><span class="icon">🏠</span> Dashboard</a></li>
-                    <li><a href="manage-ps.html"><span class="icon">🎮</span> Manajemen PlayStation</a></li>
-                    <li><a href="manage-bookings.html"><span class="icon">📅</span> Manajemen Booking</a></li>
-                    <li><a href="manage-users.html"><span class="icon">👥</span> Manajemen User</a></li>
-                    <li><a href="reports.html" class="active"><span class="icon">📊</span> Laporan</a></li>
-                    <li><a href="#" id="logoutBtn"><span class="icon">➡️</span> Logout</a></li>
-                </ul>
-            </nav>
-        </aside>
 
-        <main class="main-content">
-            <header class="main-header">
-                <button class="hamburger-btn" id="hamburgerBtn">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                  </button>
-                <h1>Laporan Pendapatan</h1>
-            </header>
-
-            <section class="reports-section">
-                <!-- Rekap Ringkasan Bisnis Periode -->
-                <div class="business-summary-cards">
-                    <div class="summary-card today">
-                        <div class="card-content">
-                            <h3>Hari Ini</h3>
-                            <div class="stat-item">
-                                <span class="stat-label">Jumlah Booking</span>
-                                <span class="stat-value" id="todayBookings">-</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">Total Pendapatan</span>
-                                <span class="stat-value" id="todayRevenue">Rp 0</span>
-                            </div>
-                            <span class="date-range" id="todayRange">Loading...</span>
-                        </div>
-                    </div>
-                    
-                    <div class="summary-card week">
-                        <div class="card-content">
-                            <h3>Minggu Ini</h3>
-                            <div class="stat-item">
-                                <span class="stat-label">Jumlah Booking</span>
-                                <span class="stat-value" id="weekBookings">-</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">Total Pendapatan</span>
-                                <span class="stat-value" id="weekRevenue">Rp 0</span>
-                            </div>
-                            <span class="date-range" id="weekRange">Loading...</span>
-                        </div>
-                    </div>
-                    
-                    <div class="summary-card month">
-                        <div class="card-content">
-                            <h3>Bulan Ini</h3>
-                            <div class="stat-item">
-                                <span class="stat-label">Jumlah Booking</span>
-                                <span class="stat-value" id="monthBookings">-</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">Total Pendapatan</span>
-                                <span class="stat-value" id="monthRevenue">Rp 0</span>
-                            </div>
-                            <span class="date-range" id="monthRange">Loading...</span>
-                        </div>
-                    </div>
-                    
-                    <div class="summary-card total">
-                        <div class="card-content">
-                            <h3>Total Keseluruhan</h3>
-                            <div class="stat-item">
-                                <span class="stat-label">Jumlah Booking</span>
-                                <span class="stat-value" id="totalBookings">-</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">Total Pendapatan</span>
-                                <span class="stat-value" id="totalRevenueSummary">Rp 0</span>
-                            </div>
-                            <span class="date-range">Semua waktu</span>
-                        </div>
-                    </div>
+            <div class="summary-card week">
+                <div class="card-icon">📈</div>
+              <div class="card-content">
+                <h3>Minggu Ini</h3>
+                <div class="stat-item">
+                  <span class="stat-label">Jumlah Booking</span>
+                  <span class="stat-value" id="weekBookings">-</span>
                 </div>
-
-                <div class="report-cards-grid">
-                    <div class="report-card">
-                        <div class="card-icon">💰</div>
-                        <h3>Total Pendapatan</h3>
-                        <p id="totalRevenue">Rp 0</p>
-                    </div>
-                    <div class="report-card">
-                        <div class="card-icon">📅</div>
-                        <h3>Total Booking</h3>
-                        <p id="totalBookingsCount">0</p>
-                    </div>
-                    <div class="report-card">
-                        <div class="card-icon">⏳</div>
-                        <h3>Booking Pending</h3>
-                        <p id="pendingBookingsCount">0</p>
-                    </div>
-                    <div class="report-card">
-                        <div class="card-icon">👥</div>
-                        <h3>Total User</h3>
-                        <p id="totalUsersCount">0</p>
-                    </div>
+                <div class="stat-item">
+                  <span class="stat-label">Total Pendapatan</span>
+                  <span class="stat-value" id="weekRevenue">Rp 0</span>
                 </div>
+                <span class="date-range" id="weekRange">Loading...</span>
+              </div>
+            </div>
 
-                <div id="reportMessage" class="message"></div>
-            </section>
-        </main>
+            <div class="summary-card month">
+                <div class="card-icon">📊</div>
+              <div class="card-content">
+                <h3>Bulan Ini</h3>
+                <div class="stat-item">
+                  <span class="stat-label">Jumlah Booking</span>
+                  <span class="stat-value" id="monthBookings">-</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Total Pendapatan</span>
+                  <span class="stat-value" id="monthRevenue">Rp 0</span>
+                </div>
+                <span class="date-range" id="monthRange">Loading...</span>
+              </div>
+            </div>
+
+            <div class="summary-card total">
+                <div class="card-icon">🏆</div>
+              <div class="card-content">
+                <h3>Total Keseluruhan</h3>
+                <div class="stat-item">
+                  <span class="stat-label">Jumlah Booking</span>
+                  <span class="stat-value" id="totalBookings">-</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Total Pendapatan</span>
+                  <span class="stat-value" id="totalRevenueSummary">Rp 0</span>
+                </div>
+                <span class="date-range">Semua waktu</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="report-generator-section">
+            <div class="report-cards-grid">
+              <div class="report-card">
+                <h3>Total Pendapatan (All Time)</h3>
+                <p id="totalRevenue">Rp 0</p>
+              </div>
+              <div class="report-card">
+                <h3>Total Booking (All Time)</h3>
+                <p id="totalBookingsCount">0</p>
+              </div>
+              <div class="report-card">
+                <h3>Booking Pending</h3>
+                <p id="pendingBookingsCount">0</p>
+              </div>
+              <div class="report-card">
+                <h3>Total User</h3>
+                <p id="totalUsersCount">0</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="reportMessage" class="message"></div>
+          <!-- Laporan Pendapatan Section (POSISI YANG BENAR) -->
+          <div class="report-generator-section">
+            <h2>📄 Laporan Pendapatan</h2>
+            <div class="report-controls">
+              <div class="date-filter">
+                <label for="startDate">Dari Tanggal:</label>
+                <input type="date" id="startDate" name="startDate" />
+              </div>
+              <div class="date-filter">
+                <label for="endDate">Sampai Tanggal:</label>
+                <input type="date" id="endDate" name="endDate" />
+              </div>
+              <button class="btn" id="generateReportBtn">
+                Tampilkan Laporan
+              </button>
+              <button class="btn btn-secondary" id="downloadPdfBtn" disabled>
+                <span>📥</span> Download PDF
+              </button>
+            </div>
+
+            <!-- Laporan Detail Harian/Periodik -->
+            <div class="report-table-container">
+              <h3>Laporan Detail</h3>
+              <table id="revenueReportTable">
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th>Nama Pelanggan</th>
+                    <th>Unit PS</th>
+                    <th>Durasi</th>
+                    <th>Tarif/Jam</th>
+                    <th>Total</th>
+                    <th>Metode</th>
+                  </tr>
+                </thead>
+                <tbody id="revenueReportBody">
+                  <!-- Data akan diisi oleh JavaScript -->
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th colspan="5" style="text-align: right">
+                      Total Pendapatan:
+                    </th>
+                    <th id="revenueTotal">Rp 0</th>
+                    <th></th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <!-- Laporan Rekap Bulanan -->
+            <div class="report-table-container">
+              <h3>Rekap Bulanan</h3>
+              <table id="monthlySummaryTable">
+                <!-- Konten tabel rekap bulanan akan diisi oleh JavaScript -->
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
 
     <script src="../js/main.js"></script>
     <script src="../js/admin/reports.js"></script>
-</body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+  </body>
 </html>

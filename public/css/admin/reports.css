@@ -1,27 +1,25 @@
 /* CSS Modern untuk Laporan Admin (Tanpa Merubah Sidebar) */
 :root {
-  --primary: #3B82F6;
-  --primary-dark: #2563EB;
-  --primary-light: #93C5FD;
-  --secondary: #2e2e2e;
-  --accent: #F59E0B;
-  --danger: #EF4444;
-  --light: #F8FAFC;
-  --dark: #1E293B;
-  --gray: #64748B;
-  --light-gray: #E2E8F0;
-  --radius: 8px;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --transition: all 0.2s ease;
+  --primary-color: #3b82f6;
+  --primary-dark: #2563eb;
+  --secondary-color: #10b981;
+  --accent-color: #f59e0b;
+  --danger-color: #ef4444;
+  --background-color: #f1f5f9;
+  --background-color-light: #ffffff;
+  --text-color: #334155;
+  --text-color-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --border-radius: 0.5rem;
+  --box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --transition: all 0.3s ease-in-out;
 }
 
 /* Main Content Area */
 .main-content {
   flex: 1;
   padding: 2rem;
-  background-color: var(--light);
+  background-color: var(--background-color);
 }
 
 .main-header {
@@ -29,16 +27,13 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--light-gray);
 }
 
 .main-header h1 {
   font-size: 1.75rem;
-  margin-bottom: 0.5rem;
-  color: var(--primary);
-  text-align: center;
-  padding-right: 40px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0;
 }
 
 /* Refresh Button */
@@ -70,11 +65,9 @@
 
 /* Reports Section */
 .reports-section {
-  background-color: white;
-  border-radius: var(--radius);
-  padding: 2rem;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 /* Business Summary Cards */
@@ -86,13 +79,20 @@
 }
 
 .summary-card {
-  border-radius: var(--radius);
+  border-radius: var(--border-radius);
   padding: 1.5rem;
   color: white;
   position: relative;
   overflow: hidden;
-  transition: var(--transition);
-  box-shadow: var(--shadow-md);
+  transition: var(--transition) !important;
+  box-shadow: var(--box-shadow);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.summary-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
 .card-content {
@@ -101,8 +101,8 @@
 }
 
 .summary-card h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 500;
   margin-bottom: 1rem;
 }
 
@@ -110,6 +110,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   margin-bottom: 0.75rem;
 }
 
@@ -119,8 +120,8 @@
 }
 
 .stat-value {
-  font-weight: 600;
-  font-size: 1.125rem;
+  font-weight: 700;
+  font-size: 1.25rem;
 }
 
 .date-range {
@@ -131,21 +132,32 @@
   margin-top: 1rem;
 }
 
+.summary-card .card-icon {
+  font-size: 2.5rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Card Colors */
 .summary-card.today {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
 }
 
 .summary-card.week {
-  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
 }
 
 .summary-card.month {
-  background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%);
+  background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
 }
 
 .summary-card.total {
-  background: linear-gradient(135deg, var(--secondary) 0%, #059669 100%);
+  background: linear-gradient(135deg, #10b981 0%, #047857 100%);
 }
 
 /* Report Cards */
@@ -153,126 +165,133 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.5rem;
-  margin: 2rem 0;
 }
 
 .report-card {
-  background-color: white;
-  border-radius: var(--radius);
+  background-color: var(--background-color-light);
+  border-radius: var(--border-radius);
   padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--box-shadow);
   transition: var(--transition);
-  border: 1px solid var(--light-gray);
+
+  border-left: 4px solid var(--primary-color);
 }
 
-.report-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+/* Report Generator Section */
+.report-generator-section {
+  background-color: var(--background-color-light);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 }
 
-.card-icon {
+.report-generator-section h2 {
+  margin-top: 0;
   font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: var(--primary);
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
+
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
-.report-card h3 {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--gray);
+.report-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.date-filter {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-filter label {
+  font-size: 0.9em;
   margin-bottom: 0.5rem;
+  color: var(--text-color);
+  font-weight: 500;}
+
+.date-filter input[type="date"] {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1em;
+  transition: var(--transition);
+}
+
+.report-table-container {
+  margin-top: 2rem;
+  overflow-x: auto;
+}
+
+.report-table-container h3 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+#downloadPdfBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+table thead th {
+  background-color: #f8fafc;
+  color: var(--text-color-secondary);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--border-color);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.report-card p {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--dark);
-  margin: 0;
+table tbody td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-color);
 }
 
-/* Card Specific Styles */
-.report-card:nth-child(1) .card-icon {
-  color: var(--secondary);
-}
-.report-card:nth-child(1) p {
-  color: var(--secondary);
+table tbody tr:last-child td {
+  border-bottom: none;
 }
 
-.report-card:nth-child(2) .card-icon {
-  color: var(--primary);
-}
-.report-card:nth-child(2) p {
-  color: var(--primary);
+table tbody tr:hover {
+  background-color: #f8fafc;
 }
 
-.report-card:nth-child(3) .card-icon {
-  color: var(--accent);
-}
-.report-card:nth-child(3) p {
-  color: var(--accent);
-}
-
-.report-card:nth-child(4) .card-icon {
-  color: var(--danger);
-}
-.report-card:nth-child(4) p {
-  color: var(--danger);
-}
-
-/* Message Styles */
-.message {
-  margin-top: 1.5rem;
+table tfoot th {
   padding: 1rem;
-  border-radius: var(--radius);
-  font-weight: 500;
-  text-align: center;
-}
-
-.message.success {
-  background-color: #d4edda;
-  color: var(--success);
-  border: 1px solid #c3e6cb;
-}
-
-.message.error {
-  background-color: #f8d7da;
-  color: var(--danger);
-  border: 1px solid #f5c6cb;
+  font-weight: 700;
+  text-align: right;
+  color: var(--text-color);
+  font-size: 1rem;
 }
 
 /* Responsive Styles */
 @media (max-width: 1024px) {
   .business-summary-cards {
-      grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
   .main-content {
-      padding: 1.5rem;
+    padding: 1.5rem;
   }
-  
+
   .business-summary-cards,
   .report-cards-grid {
-      grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .main-content {
-      padding: 1rem;
-  }
-  
-  .main-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1rem;
-  }
-  
-  .refresh-btn {
-      width: 100%;
-      justify-content: center;
+    grid-template-columns: 1fr;
   }
 }
