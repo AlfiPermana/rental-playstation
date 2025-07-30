@@ -105,14 +105,14 @@ exports.getBookingDetailsForPayment = async (req, res) => {
 
 exports.createBooking = async (req, res) => {
   // Ambil paymentMethod dari body
-  const { playstationId, bookingDate, startTime, durationHours, paymentMethod } = req.body;
+  const { playstationId, bookingDate, startTime, durationHours } = req.body;
   const userId = req.user.id;
 
   // Validasi input, termasuk paymentMethod
-  if (!playstationId || !bookingDate || !startTime || !durationHours || !paymentMethod) {
+  if (!playstationId || !bookingDate || !startTime || !durationHours) {
     return res
       .status(400)
-      .json({ message: "Semua detail booking, termasuk metode pembayaran, harus diisi." });
+      .json({ message: "Semua detail booking harus diisi." });
   }
 
   const psId = Number(playstationId);
@@ -121,7 +121,9 @@ exports.createBooking = async (req, res) => {
   if (isNaN(parsedDurationHours) || parsedDurationHours <= 0) {
     return res
       .status(400)
-      .json({ message: "Durasi harus berupa angka yang valid dan lebih dari 0." });
+      .json({
+        message: "Durasi harus berupa angka yang valid dan lebih dari 0.",
+      });
   }
 
   // Hitung waktu selesai
@@ -132,9 +134,10 @@ exports.createBooking = async (req, res) => {
     ).padStart(2, "0")}:00`
   );
   startDateTime.setHours(startDateTime.getHours() + parsedDurationHours);
-  const endTime = `${String(startDateTime.getHours()).padStart(2, "0")}:${String(
-    startDateTime.getMinutes()
-  ).padStart(2, "0")}:00`;
+  const endTime = `${String(startDateTime.getHours()).padStart(
+    2,
+    "0"
+  )}:${String(startDateTime.getMinutes()).padStart(2, "0")}:00`;
 
   let bookingAmount;
   let playstationData;
@@ -144,18 +147,26 @@ exports.createBooking = async (req, res) => {
     // Ambil data PS dan hitung harga dasar
     playstationData = await Playstation.getById(psId);
     if (!playstationData) {
-      return res.status(404).json({ message: "PlayStation tidak ditemukan di database." });
+      return res
+        .status(404)
+        .json({ message: "PlayStation tidak ditemukan di database." });
     }
 
     const priceFromDb = parseFloat(playstationData.price_per_hour);
     if (isNaN(priceFromDb) || priceFromDb <= 0) {
-      return res.status(500).json({ message: "Informasi harga PlayStation tidak valid." });
+      return res
+        .status(500)
+        .json({ message: "Informasi harga PlayStation tidak valid." });
     }
 
-    bookingAmount = calculateTotalBookingAmount(priceFromDb, parsedDurationHours);
+    bookingAmount = calculateTotalBookingAmount(
+      priceFromDb,
+      parsedDurationHours
+    );
     if (bookingAmount <= 0) {
       return res.status(400).json({
-        message: "Jumlah pembayaran tidak valid (hasil perhitungan nol atau negatif).",
+        message:
+          "Jumlah pembayaran tidak valid (hasil perhitungan nol atau negatif).",
       });
     }
 
@@ -170,7 +181,8 @@ exports.createBooking = async (req, res) => {
 
     if (!isSlotActuallyAvailable) {
       return res.status(409).json({
-        message: "Slot waktu yang Anda pilih sudah tidak tersedia. Mohon pilih slot lain.",
+        message:
+          "Slot waktu yang Anda pilih sudah tidak tersedia. Mohon pilih slot lain.",
       });
     }
 
@@ -183,7 +195,10 @@ exports.createBooking = async (req, res) => {
       endTime,
       parsedDurationHours,
       bookingAmount,
-      paymentMethod // Teruskan metode pembayaran ke model
+      // paymentMethod
+      "online" // Hardcode metode pembayaran menjadi 'online'
+
+      // Teruskan metode pembayaran ke model
     );
     const bookingId = bookingResult.insertId;
 
@@ -192,11 +207,18 @@ exports.createBooking = async (req, res) => {
     const finalAmount = newBooking.amount;
 
     // Respons kondisional berdasarkan metode pembayaran
-    if (paymentMethod === 'on_site') {
-      res.status(201).json({ message: "Booking berhasil dibuat. Silakan bayar tunai di lokasi.", bookingId: bookingId, finalAmount: finalAmount });
-    } else { // 'online' payment
-      res.status(201).json({ message: "Booking berhasil dibuat. Lanjutkan ke pembayaran.", bookingId: bookingId, redirectUrl: `${process.env.APP_URL}/user/payment.html?booking_id=${bookingId}&amount=${finalAmount}` });
-    }
+    // if (paymentMethod === 'on_site') {
+    //   res.status(201).json({ message: "Booking berhasil dibuat. Silakan bayar tunai di lokasi.", bookingId: bookingId, finalAmount: finalAmount });
+    // } else { // 'online' payment
+    //   res.status(201).json({ message: "Booking berhasil dibuat. Lanjutkan ke pembayaran.", bookingId: bookingId, redirectUrl: `${process.env.APP_URL}/user/payment.html?booking_id=${bookingId}&amount=${finalAmount}` });
+    // }
+    res
+      .status(201)
+      .json({
+        message: "Booking berhasil dibuat. Lanjutkan ke pembayaran.",
+        bookingId: bookingId,
+        redirectUrl: `${process.env.APP_URL}/user/payment.html?booking_id=${bookingId}&amount=${finalAmount}`,
+      });
   } catch (error) {
     console.error("Error in createBooking:", error);
     if (bookingResult && bookingResult.insertId) {

@@ -21,17 +21,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const psTypeSpan = document.getElementById("psType");
   const psPriceSpan = document.getElementById("psPrice");
 
-  // Elemen untuk Modal Pembayaran
-  const paymentChoiceModal = document.getElementById("paymentChoiceModal");
-  const closeModalBtn = document.getElementById("closeModalBtn");
-  const payOnlineBtn = document.getElementById("payOnlineBtn");
-  const payOnSiteBtn = document.getElementById("payOnSiteBtn");
-
   // Variabel untuk menyimpan state
   let selectedSlotTime = null;
   let selectedPlaystation = null;
   let playstationsData = [];
-  let bookingData = {}; // Untuk menyimpan data booking sementara
 
   // Fungsi untuk mengupdate status tombol Konfirmasi Booking
   const updateConfirmButtonStatus = () => {
@@ -98,7 +91,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("Error fetching PlayStations:", error);
       alert("Terjadi kesalahan saat memuat daftar PlayStation.");
     } finally {
-      updateConfirmButtonStatus();
+      // This call can be removed as it's handled at the end of DOMContentLoaded
+      // updateConfirmButtonStatus();
     }
   };
 
@@ -254,36 +248,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // --- LOGIKA BARU: Handle form submission dengan menampilkan modal ---
-  bookingForm.addEventListener("submit", (e) => {
+  // --- LOGIKA BARU: Handle form submission dengan memproses booking langsung ---
+  bookingForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Simpan data booking ke variabel sementara
-    bookingData = {
-      customerName: customerNameInput.value,
-      customerEmail: customerEmailInput.value,
-      customerPhone: customerPhoneInput.value,
-      playstationId: playstationSelect.value,
-      bookingDate: bookingDateInput.value,
-      startTime: selectedSlotTime,
-      durationHours: parseInt(durationHoursSelect.value),
-    };
-
-    // Tampilkan modal pilihan pembayaran
-    confirmBookingBtn.disabled = true;
-    paymentChoiceModal.style.display = "flex";
-  });
-
-  // --- LOGIKA BARU: Proses booking setelah metode pembayaran dipilih ---
-  const proceedWithBooking = async (paymentMethod) => {
-    paymentChoiceModal.style.display = "none";
+    confirmBookingBtn.disabled = true; // Disable button while processing
     showMessage("Memproses booking...", "info");
 
     try {
       const response = await fetch("/api/guest/book", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...bookingData, paymentMethod }),
+        body: JSON.stringify({
+          customerName: customerNameInput.value,
+          customerEmail: customerEmailInput.value,
+          customerPhone: customerPhoneInput.value,
+          playstationId: playstationSelect.value,
+          bookingDate: bookingDateInput.value,
+          startTime: selectedSlotTime,
+          durationHours: parseInt(durationHoursSelect.value),
+          paymentMethod: "online", // Hardcoded to 'online' as per your current setup
+        }),
       });
 
       const data = await response.json();
@@ -304,7 +289,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           );
           window.location.href = data.redirectUrl;
         } else {
-          // Pembayaran di Tempat (Tunai) - Alur Baru
+          // Pembayaran di Tempat (Tunai) - Alur Baru (if server sends no redirectUrl)
           alert(
             `Permintaan Booking Berhasil!\n\n` +
               `Booking ID: ${data.bookingId}\n` +
@@ -314,6 +299,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               `${data.message}\nAdmin akan segera menghubungi Anda melalui WhatsApp/Telepon.`
           );
 
+          // Reset form and UI after successful booking
           bookingForm.reset();
           availableSlotsDiv.innerHTML =
             '<div class="slots-placeholder"><span class="icon">⏰</span><p>Pilih PlayStation, tanggal, dan durasi untuk melihat slot.</p></div>';
@@ -335,23 +321,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "error"
       );
     } finally {
-      confirmBookingBtn.disabled = false;
-    }
-  };
-
-  // --- LOGIKA BARU: Event listener untuk tombol-tombol di modal ---
-  payOnlineBtn.addEventListener("click", () => proceedWithBooking("online"));
-  payOnSiteBtn.addEventListener("click", () => proceedWithBooking("on_site"));
-
-  closeModalBtn.addEventListener("click", () => {
-    paymentChoiceModal.style.display = "none";
-    confirmBookingBtn.disabled = false; // Aktifkan kembali tombol jika modal ditutup
-  });
-
-  window.addEventListener("click", (event) => {
-    if (event.target == paymentChoiceModal) {
-      paymentChoiceModal.style.display = "none";
-      confirmBookingBtn.disabled = false;
+      confirmBookingBtn.disabled = false; // Re-enable button regardless of success/failure
     }
   });
 
@@ -365,6 +335,64 @@ document.addEventListener("DOMContentLoaded", async () => {
   bookingDateInput.value = `${year}-${month}-${day}`;
 
   fetchPlaystations();
+  // Small delay to ensure playstations are loaded before trying to fetch slots
+  // based on default selected value, if any.
   setTimeout(fetchAvailableSlots, 100);
   updateConfirmButtonStatus();
+});
+
+// Original code for highlighting denah unit based on dropdown/click
+document.addEventListener("DOMContentLoaded", function () {
+  var select = document.getElementById("playstationSelect");
+  if (select) {
+    select.addEventListener("change", function () {
+      // Hilangkan highlight di semua box
+      document.querySelectorAll(".denah-unit").forEach(function (box) {
+        box.classList.remove("active");
+      });
+      // Ambil value dropdown yang dipilih
+      var selectedText = this.options[this.selectedIndex].text;
+      var match = selectedText.match(/PS\s*(\d)\s*UNIT\s*(\d)/i);
+      if (match) {
+        var psType = match[1];
+        var unitNum = match[2];
+        var boxId = "denah-ps" + psType + "unit" + unitNum;
+        var box = document.getElementById(boxId);
+        if (box) box.classList.add("active");
+      }
+    });
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  var selectPs = document.getElementById("playstationSelect");
+  var unitMap = [
+    { id: "denah-ps3unit1", keyword: "PS 3 UNIT 1" },
+    { id: "denah-ps3unit2", keyword: "PS 3 UNIT 2" },
+    { id: "denah-ps4unit1", keyword: "PS 4 UNIT 1" },
+    { id: "denah-ps4unit2", keyword: "PS 4 UNIT 2" },
+    { id: "denah-ps4unit3", keyword: "PS 4 UNIT 3" },
+  ];
+  unitMap.forEach(function (unit) {
+    var el = document.getElementById(unit.id);
+    if (el && selectPs) {
+      el.addEventListener("click", function () {
+        // Hilangkan efek aktif dari semua unit
+        unitMap.forEach(function (u) {
+          var otherEl = document.getElementById(u.id);
+          if (otherEl) otherEl.classList.remove("active");
+        });
+        // Tambahkan efek aktif ke unit yang diklik
+        el.classList.add("active");
+        // Pilih dropdown sesuai unit
+        for (var i = 0; i < selectPs.options.length; i++) {
+          if (selectPs.options[i].text.includes(unit.keyword)) {
+            selectPs.selectedIndex = i;
+            selectPs.dispatchEvent(new Event("change"));
+            break;
+          }
+        }
+      });
+    }
+  });
 });

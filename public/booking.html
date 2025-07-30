@@ -1,152 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Booking PlayStation - PlayStation Rental</title>
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/booking.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/booking.css" />
+    <link rel="stylesheet" href="css/booking-denah.css" />
+  </head>
+  <body>
     <div class="booking-container">
-        <div class="booking-header">
-            <h1>🎮 Booking PlayStation</h1>
-            <p>Pesan PlayStation favorit Anda dengan mudah tanpa perlu login!</p>
-            <div class="booking-info">           
-                <div class="info-item">
-                    <span class="icon">💳</span>
-                    <span>Pembayaran dengan Kode Unik</span>
-                </div>
-                <div class="info-item">
-                    <span class="icon">⚡</span>
-                    <span>Proses Cepat & Mudah</span>
-                </div>
-                <div class="info-item">
-                    <span class="icon">🔒</span>
-                    <span>Aman & Terpercaya</span>
-                </div>
+      <div class="booking-header">
+        <h1>🎮 Booking PlayStation</h1>
+        <p>Pesan PlayStation favorit Anda dengan mudah tanpa perlu login!</p>
+        <div class="booking-info">
+          <div class="info-item">
+            <span class="icon">💳</span>
+            <span>Pembayaran dengan Kode Unik</span>
+          </div>
+          <div class="info-item">
+            <span class="icon">⚡</span>
+            <span>Proses Cepat & Mudah</span>
+          </div>
+          <div class="info-item">
+            <span class="icon">🔒</span>
+            <span>Aman & Terpercaya</span>
+          </div>
+        </div>
+      </div>
+
+      <form id="bookingForm" class="booking-form">
+        <!-- Data Customer -->
+        <div class="form-section customer-section">
+          <h3>📋 Data Pemesan</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="customerName">Nama Lengkap *</label>
+              <input
+                type="text"
+                id="customerName"
+                required
+                placeholder="Masukkan nama lengkap"
+              />
             </div>
+            <div class="form-group">
+              <label for="customerPhone">Nomor Telepon *</label>
+              <input
+                type="tel"
+                id="customerPhone"
+                required
+                placeholder="08xxxxxxxxxx"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="customerEmail">Email *</label>
+            <input
+              type="email"
+              id="customerEmail"
+              required
+              placeholder="contoh@email.com"
+            />
+            <small class="form-help"
+              >Email akan digunakan untuk tracking booking</small
+            >
+          </div>
         </div>
 
-        <form id="bookingForm" class="booking-form">
-            <!-- Data Customer -->
-            <div class="form-section customer-section">
-                <h3>📋 Data Pemesan</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="customerName">Nama Lengkap *</label>
-                        <input type="text" id="customerName" required placeholder="Masukkan nama lengkap">
-                    </div>
-                    <div class="form-group">
-                        <label for="customerPhone">Nomor Telepon *</label>
-                        <input type="tel" id="customerPhone" required placeholder="08xxxxxxxxxx">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="customerEmail">Email *</label>
-                    <input type="email" id="customerEmail" required placeholder="contoh@email.com">
-                    <small class="form-help">Email akan digunakan untuk tracking booking</small>
-                </div>
+        <!-- Pilihan PlayStation -->
+        <div class="form-section playstation-section">
+          <h3>🎮 Pilih PlayStation</h3>
+          <div class="form-group">
+            <label for="playstationSelect">PlayStation:</label>
+            <select id="playstationSelect" required>
+              <option value="">-- Pilih PlayStation --</option>
+            </select>
+            <div
+              id="playstationInfo"
+              class="playstation-info"
+              style="display: none"
+            >
+              <div class="info-card">
+                <h4 id="psName">-</h4>
+                <p id="psType">-</p>
+                <p id="psPrice">Rp 0/jam</p>
+              </div>
             </div>
-
-            <!-- Pilihan PlayStation -->
-            <div class="form-section playstation-section">
-                <h3>🎮 Pilih PlayStation</h3>
-                <div class="form-group">
-                    <label for="playstationSelect">PlayStation:</label>
-                    <select id="playstationSelect" required>
-                        <option value="">-- Pilih PlayStation --</option>
-                    </select>
-                    <div id="playstationInfo" class="playstation-info" style="display: none;">
-                        <div class="info-card">
-                            <h4 id="psName">-</h4>
-                            <p id="psType">-</p>
-                            <p id="psPrice">Rp 0/jam</p>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <!-- Denah Ruangan PlayStation -->
+          <div class="denah-section">
+            <!-- Icon di atas denah dihapus sesuai permintaan -->
+            <div class="denah-grid-custom">
+              <div class="denah-carpark">AREA PARKIR</div>
+              <div class="denah-reception">AREA MASUK</div>
+              <div class="denah-waiting">
+                RUANG TUNGGU<br />
+                <!-- <span class="denah-queue">QUEUE</span> -->
+              </div>
+              <div class="denah-entrance">KONFIRMASI ADMIN</div>
+              <div
+                class="denah-unit ps3unit1"
+                id="denah-ps3unit1"
+                style="cursor: pointer"
+              >
+                PS 3<br />UNIT 1
+              </div>
+              <div
+                class="denah-unit ps3unit2"
+                id="denah-ps3unit2"
+                style="cursor: pointer"
+              >
+                PS 3<br />UNIT 2
+              </div>
+              <div
+                class="denah-unit ps4unit1"
+                id="denah-ps4unit1"
+                style="cursor: pointer"
+              >
+                PS 4<br />UNIT 1
+              </div>
+              <div
+                class="denah-unit ps4unit2"
+                id="denah-ps4unit2"
+                style="cursor: pointer"
+              >
+                PS 4<br />UNIT 2
+              </div>
+              <div
+                class="denah-unit ps4unit3"
+                id="denah-ps4unit3"
+                style="cursor: pointer"
+              >
+                PS 4<br />UNIT 3
+              </div>
+              <div
+                class="denah-wc"
+                style="
+                  background: #f3f4f6;
+                  border-radius: 10px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-weight: bold;
+                  font-size: 1.1em;
+                "
+              >
+                TOILET
+              </div>
             </div>
+                      
+          </div>
+        </div>
 
-            <!-- Pilihan Waktu -->
-            <div class="form-section time-section">
-                <h3>📅 Pilih Waktu</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="bookingDate">Tanggal Booking:</label>
-                        <input type="date" id="bookingDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="durationHours">Durasi (Jam):</label>
-                        <!-- <select id="durationHours" required>
+        <!-- Pilihan Waktu -->
+        <div class="form-section time-section">
+          <h3>📅 Pilih Waktu</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bookingDate">Tanggal Booking:</label>
+              <input type="date" id="bookingDate" required />
+            </div>
+            <div class="form-group">
+              <label for="durationHours">Durasi (Jam):</label>
+              <!-- <select id="durationHours" required>
                             <option value="">-- Pilih Durasi --</option>
                             <option value="1">1 Jam</option>
                             <option value="2">2 Jam</option>
                             <option value="3">3 Jam</option>
                             <option value="4">4 Jam</option>
                         </select> -->
-                        <input type="number" id="durationHours" required min="1" placeholder="Min. 1 jam">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Slot Waktu Tersedia:</label>
-                    <div id="availableSlots" class="slots-grid">
-                        <div class="slots-placeholder">
-                            <span class="icon">⏰</span>
-                            <p>Pilih PlayStation, tanggal, dan durasi untuk melihat slot.</p>
-                        </div>
-                    </div>
-                </div>
+              <input
+                type="number"
+                id="durationHours"
+                required
+                min="1"
+                placeholder="Min. 1 jam"
+              />
             </div>
-
-            <!-- Total Harga & Kode Unik -->
-            <div id="priceDisplay" class="price-section" style="display: none;">
-                <h3>💰 Detail Pembayaran</h3>
-                <div class="price-breakdown">
-                    <div class="price-item">
-                        <span>Harga Sewa:</span>
-                        <span id="basePrice">Rp 0</span>
-                    </div>
-                    <div class="price-item">
-                        <span>Kode Unik:</span>
-                        <span id="uniqueCodePreview">-</span>
-                    </div>
-                    <div class="price-item total">
-                        <span>Total Pembayaran:</span>
-                        <span id="totalPrice">Rp 0</span>
-                    </div>
-                </div>
-                <div class="payment-info">
-                    <p><strong>💡 Info:</strong> Total pembayaran sudah termasuk kode unik 3 digit untuk memudahkan verifikasi pembayaran.</p>
-                </div>
+          </div>
+          <div class="form-group">
+            <label>Slot Waktu Tersedia:</label>
+            <div id="availableSlots" class="slots-grid">
+              <div class="slots-placeholder">
+                <span class="icon">⏰</span>
+                <p>
+                  Pilih PlayStation, tanggal, dan durasi untuk melihat slot.
+                </p>
+              </div>
             </div>
-
-            <button type="submit" class="btn btn-primary" id="confirmBookingBtn" disabled>
-                <span class="btn-icon">✅</span>
-                Konfirmasi Booking
-            </button>
-        </form>
-
-        <div id="bookingMessage" class="message" style="display: none;"></div>
-
-        <div class="back-link">
-            <a href="/">← Kembali ke Beranda</a>
+          </div>
         </div>
+
+        <!-- Total Harga & Kode Unik -->
+        <div id="priceDisplay" class="price-section" style="display: none">
+          <h3>💰 Detail Pembayaran</h3>
+          <div class="price-breakdown">
+            <div class="price-item">
+              <span>Harga Sewa:</span>
+              <span id="basePrice">Rp 0</span>
+            </div>
+            <div class="price-item">
+              <span>Kode Unik:</span>
+              <span id="uniqueCodePreview">-</span>
+            </div>
+            <div class="price-item total">
+              <span>Total Pembayaran:</span>
+              <span id="totalPrice">Rp 0</span>
+            </div>
+          </div>
+          <div class="payment-info">
+            <p>
+              <strong>💡 Info:</strong> Total pembayaran sudah termasuk kode
+              unik 3 digit untuk memudahkan verifikasi pembayaran.
+            </p>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          id="confirmBookingBtn"
+          disabled
+        >
+          <span class="btn-icon">✅</span>
+          Konfirmasi Booking
+        </button>
+      </form>
+
+      <div id="bookingMessage" class="message" style="display: none"></div>
+
+      <div class="back-link">
+        <a href="/">← Kembali ke Beranda</a>
+      </div>
     </div>
 
-        <!-- Modal Pilihan Pembayaran -->
-        <div id="paymentChoiceModal" class="modal">
-            <div class="modal-content">
-                <span id="closeModalBtn" class="close-btn">&times;</span>
-                <h2>Pilih Metode Pembayaran</h2>
-                <p>Bagaimana Anda ingin membayar booking ini?</p>
-                <div class="modal-actions">
-                    <button id="payOnlineBtn" class="btn btn-primary">Bayar Online (Transfer)</button>
-                    <button id="payOnSiteBtn" class="btn btn-secondary">Bayar di Tempat (Tunai)</button>
-                </div>
-            </div>
+    <!-- Modal Pilihan Pembayaran -->
+    <!-- <div id="paymentChoiceModal" class="modal">
+      <div class="modal-content">
+        <span id="closeModalBtn" class="close-btn">&times;</span>
+        <h2>Pilih Metode Pembayaran</h2>
+        <p>Bagaimana Anda ingin membayar booking ini?</p>
+        <div class="modal-actions">
+          <button id="payOnlineBtn" class="btn btn-primary">
+            Bayar Online (Transfer)
+          </button>
+          <button id="payOnSiteBtn" class="btn btn-secondary">
+            Bayar di Tempat (Tunai)
+          </button>
         </div>
-    
+      </div>
+    </div> -->
 
     <script src="js/booking.js"></script>
-</body>
-</html> 
+  </body>
+</html>

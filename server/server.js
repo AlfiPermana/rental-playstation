@@ -3,6 +3,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken'); // Import jwt untuk verifikasi token
 const authRoutes = require('./routes/authRoutes');
+const rateLimit = require('express-rate-limit');
 const userRoutes = require('./routes/userRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const guestRoutes = require('./routes/guestRoutes'); // Tambahkan guest routes
@@ -21,6 +22,17 @@ if (!process.env.APP_URL) {
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Rate limiting middleware
+const limiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: 'Terlalu banyak permintaan dari IP ini, silakan coba lagi setelah satu menit'
+});
+
+// Apply the rate limiting middleware to all API requests
+app.use('/api/', limiter);
+
 
 // Middleware untuk parsing body request
 app.use(express.json()); // Untuk JSON body
