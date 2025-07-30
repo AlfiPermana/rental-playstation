@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const uniqueCode = booking.payment_code || '000';
                     const finalAmount = booking.amount;
                     const baseAmount = finalAmount - parseInt(uniqueCode);
-                    
                     row.innerHTML = `
                         <td>${booking.id}</td>
                         <td><span style="font-weight: bold; color: #dc3545; background: #f8f9fa; padding: 3px 6px; border-radius: 3px;">${uniqueCode}</span></td>
@@ -60,8 +59,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <td><span class="status-tag ${booking.payment_status}">${booking.payment_status.toUpperCase()}</span></td>
                         <td>${proofHtml}</td>
                         <td class="action-btns">
-                            ${(booking.payment_status === 'pending' || booking.payment_status === 'uploaded') && booking.proof_of_payment_url ? `<button class="confirm-payment-btn" data-id="${booking.id}">Konfirmasi Bayar</button>` : ''}
-                            ${(booking.payment_status === 'pending' || booking.payment_status === 'uploaded') && booking.proof_of_payment_url ? `<button class="reject-payment-btn" data-id="${booking.id}">Tolak Bayar</button>` : ''}
+                            ${(booking.payment_status === 'pending' || booking.payment_status === 'uploaded' || booking.payment_status === 'on_site') ? `<button class="confirm-payment-btn" data-id="${booking.id}">Konfirmasi Bayar</button>` : ''}
+                            ${(booking.payment_status === 'pending' || booking.payment_status === 'uploaded' || booking.payment_status === 'on_site') ? `<button class="reject-payment-btn" data-id="${booking.id}">Tolak Bayar</button>` : ''}
                             
                             ${booking.status === 'confirmed' ? `<button class="complete-booking-btn" data-id="${booking.id}">Selesaikan Booking</button>` : ''}
                             ${(booking.status === 'pending' || booking.status === 'confirmed') && booking.payment_status !== 'failed' && booking.payment_status !== 'cancelled' ? `<button class="cancel-booking-btn" data-id="${booking.id}">Batalkan Booking</button>` : ''}

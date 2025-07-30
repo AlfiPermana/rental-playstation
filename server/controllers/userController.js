@@ -104,28 +104,27 @@ exports.getBookingDetailsForPayment = async (req, res) => {
 };
 
 exports.createBooking = async (req, res) => {
-  const { playstationId, bookingDate, startTime, durationHours } = req.body;
+  // Ambil paymentMethod dari body
+  const { playstationId, bookingDate, startTime, durationHours, paymentMethod } = req.body;
   const userId = req.user.id;
-  const username = req.user.username;
 
-  console.log("Request Body:", req.body);
-  console.log("Authenticated userId:", userId);
-
-  if (!playstationId || !bookingDate || !startTime || !durationHours) {
+  // Validasi input, termasuk paymentMethod
+  if (!playstationId || !bookingDate || !startTime || !durationHours || !paymentMethod) {
     return res
       .status(400)
-      .json({ message: "Semua detail booking harus diisi." });
+      .json({ message: "Semua detail booking, termasuk metode pembayaran, harus diisi." });
   }
 
   const psId = Number(playstationId);
   const parsedDurationHours = parseInt(durationHours);
 
   if (isNaN(parsedDurationHours) || parsedDurationHours <= 0) {
-    return res.status(400).json({
-      message: "Durasi harus berupa angka yang valid dan lebih dari 0.",
-    });
+    return res
+      .status(400)
+      .json({ message: "Durasi harus berupa angka yang valid dan lebih dari 0." });
   }
 
+  // Hitung waktu selesai
   const [startHour, startMinute] = startTime.split(":").map(Number);
   const startDateTime = new Date(
     `${bookingDate}T${String(startHour).padStart(2, "0")}:${String(
@@ -133,74 +132,49 @@ exports.createBooking = async (req, res) => {
     ).padStart(2, "0")}:00`
   );
   startDateTime.setHours(startDateTime.getHours() + parsedDurationHours);
-  const endTime = `${String(startDateTime.getHours()).padStart(
-    2,
-    "0"
-  )}:${String(startDateTime.getMinutes()).padStart(2, "0")}:00`;
+  const endTime = `${String(startDateTime.getHours()).padStart(2, "0")}:${String(
+    startDateTime.getMinutes()
+  ).padStart(2, "0")}:00`;
 
   let bookingAmount;
   let playstationData;
   let bookingResult;
 
   try {
+    // Ambil data PS dan hitung harga dasar
     playstationData = await Playstation.getById(psId);
     if (!playstationData) {
-      return res
-        .status(404)
-        .json({ message: "PlayStation tidak ditemukan di database." });
+      return res.status(404).json({ message: "PlayStation tidak ditemukan di database." });
     }
-
-    console.log(
-      `DEBUG: Raw price_per_hour from DB: ${
-        playstationData.price_per_hour
-      }, Type: ${typeof playstationData.price_per_hour}`
-    );
 
     const priceFromDb = parseFloat(playstationData.price_per_hour);
-
     if (isNaN(priceFromDb) || priceFromDb <= 0) {
-      console.error(
-        "ERROR: price_per_hour dari database tidak valid atau nol/negatif untuk PS ID:",
-        psId,
-        "Nilai:",
-        playstationData.price_per_hour
-      );
-      return res
-        .status(500)
-        .json({ message: "Informasi harga PlayStation tidak valid." });
+      return res.status(500).json({ message: "Informasi harga PlayStation tidak valid." });
     }
-    console.log(
-      `DEBUG: Converted priceFromDb: ${priceFromDb}, Type: ${typeof priceFromDb}`
-    );
 
-    bookingAmount = calculateTotalBookingAmount(
-      priceFromDb,
-      parsedDurationHours
-    );
-
+    bookingAmount = calculateTotalBookingAmount(priceFromDb, parsedDurationHours);
     if (bookingAmount <= 0) {
       return res.status(400).json({
-        message:
-          "Jumlah pembayaran tidak valid (hasil perhitungan nol atau negatif).",
+        message: "Jumlah pembayaran tidak valid (hasil perhitungan nol atau negatif).",
       });
     }
 
+    // Perbaiki pengecekan ketersediaan slot
     const availableSlotsForDate = await Booking.getAvailableSlots(
       playstationId,
       bookingDate
     );
     const isSlotActuallyAvailable = availableSlotsForDate.some(
-      (slot) => slot.start === startTime && slot.available
+      (slot) => slot.time === startTime
     );
 
     if (!isSlotActuallyAvailable) {
       return res.status(409).json({
-        message:
-          "Slot waktu yang Anda pilih sudah tidak tersedia. Mohon pilih slot lain.",
+        message: "Slot waktu yang Anda pilih sudah tidak tersedia. Mohon pilih slot lain.",
       });
     }
 
-    // --- SIMPAN BOOKING KE DATABASE ---
+    // Simpan booking dengan menyertakan metode pembayaran
     bookingResult = await Booking.create(
       userId,
       psId,
@@ -208,31 +182,28 @@ exports.createBooking = async (req, res) => {
       startTime,
       endTime,
       parsedDurationHours,
-      bookingAmount
+      bookingAmount,
+      paymentMethod // Teruskan metode pembayaran ke model
     );
     const bookingId = bookingResult.insertId;
 
-    // --- RESPON SUKSES KE FRONTEND (ARAHKAN KE HALAMAN PEMBAYARAN CUSTOM) ---
-    res.status(201).json({
-      message: "Booking berhasil dibuat. Lanjutkan ke pembayaran.",
-      bookingId: bookingId,
-      amount: bookingAmount,
-      redirectUrl: `${process.env.APP_URL}/user/payment.html?booking_id=${bookingId}&amount=${bookingAmount}`,
-    });
+    // Ambil booking yang baru dibuat untuk mendapatkan total akhir dan kode unik
+    const newBooking = await Booking.getById(bookingId);
+    const finalAmount = newBooking.amount;
+
+    // Respons kondisional berdasarkan metode pembayaran
+    if (paymentMethod === 'on_site') {
+      res.status(201).json({ message: "Booking berhasil dibuat. Silakan bayar tunai di lokasi.", bookingId: bookingId, finalAmount: finalAmount });
+    } else { // 'online' payment
+      res.status(201).json({ message: "Booking berhasil dibuat. Lanjutkan ke pembayaran.", bookingId: bookingId, redirectUrl: `${process.env.APP_URL}/user/payment.html?booking_id=${bookingId}&amount=${finalAmount}` });
+    }
   } catch (error) {
     console.error("Error in createBooking:", error);
     if (bookingResult && bookingResult.insertId) {
       await Booking.updateStatus(bookingResult.insertId, "cancelled");
-      await Booking.updatePaymentStatus(
-        bookingResult.insertId,
-        "failed",
-        null,
-        "system_error_booking_failed"
-      );
     }
     res.status(500).json({
-      message:
-        "Server error saat memproses booking atau pembayaran. Silakan periksa log server.",
+      message: "Server error saat memproses booking. Silakan coba lagi.",
     });
   }
 };

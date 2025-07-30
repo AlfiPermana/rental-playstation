@@ -12,7 +12,7 @@
         <div class="booking-header">
             <h1>🎮 Booking PlayStation</h1>
             <p>Pesan PlayStation favorit Anda dengan mudah tanpa perlu login!</p>
-            <div class="booking-info">
+            <div class="booking-info">           
                 <div class="info-item">
                     <span class="icon">💳</span>
                     <span>Pembayaran dengan Kode Unik</span>
@@ -77,13 +77,14 @@
                     </div>
                     <div class="form-group">
                         <label for="durationHours">Durasi (Jam):</label>
-                        <select id="durationHours" required>
+                        <!-- <select id="durationHours" required>
                             <option value="">-- Pilih Durasi --</option>
                             <option value="1">1 Jam</option>
                             <option value="2">2 Jam</option>
                             <option value="3">3 Jam</option>
                             <option value="4">4 Jam</option>
-                        </select>
+                        </select> -->
+                        <input type="number" id="durationHours" required min="1" placeholder="Min. 1 jam">
                     </div>
                 </div>
                 <div class="form-group">
@@ -131,6 +132,20 @@
             <a href="/">← Kembali ke Beranda</a>
         </div>
     </div>
+
+        <!-- Modal Pilihan Pembayaran -->
+        <div id="paymentChoiceModal" class="modal">
+            <div class="modal-content">
+                <span id="closeModalBtn" class="close-btn">&times;</span>
+                <h2>Pilih Metode Pembayaran</h2>
+                <p>Bagaimana Anda ingin membayar booking ini?</p>
+                <div class="modal-actions">
+                    <button id="payOnlineBtn" class="btn btn-primary">Bayar Online (Transfer)</button>
+                    <button id="payOnSiteBtn" class="btn btn-secondary">Bayar di Tempat (Tunai)</button>
+                </div>
+            </div>
+        </div>
+    
 
     <script src="js/booking.js"></script>
 </body>
