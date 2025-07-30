@@ -20,7 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
         navMenu.classList.remove("active");
       });
     });
-  }
+ 
+
+   }
 
   // Scroll animations
   const animateOnScroll = function () {

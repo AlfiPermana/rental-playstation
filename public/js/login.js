@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showSuccess(data.message);
         localStorage.setItem('token', data.token);
         localStorage.setItem('userRole', data.role);
+        localStorage.setItem('username', data.username);
         
         const redirectPath = data.role === 'admin' 
             ? '/admin/dashboard-admin.html' 

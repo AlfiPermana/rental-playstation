@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/admin/dashboard-admin.css" />
+    <link rel="stylesheet" href="../css/admin.css" />
+    <link rel="stylesheet" href="../css/booking.css" />
+    <style>
+      .container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .back-link {
+        display: inline-block;
+        margin-bottom: 1.5rem;
+        color: #007bff;
+        text-decoration: none;
+      }
+      .back-link:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="admin-wrapper">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2><span class="icon">⚙️</span> Admin Panel</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <a href="dashboard-admin.html"
+                ><span class="icon">🏠</span> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="manage-ps.html"
+                ><span class="icon">🎮</span> Manajemen PlayStation</a
+              >
+            </li>
+            <li>
+                <a href="manage-bookings.html"
+                ><span class="icon">📅</span> Daftar Booking</a
+              >
+            </li>
+            <li>
+              <a href="create-booking.html" class="active"
+                ><span class="icon">➕</span> Buat Booking Manual</a
+              >
+            </li>
+            <li>
+              <a href="manage-users.html"
+                ><span class="icon">👥</span> Manajemen User</a
+              >
+            </li>
+            <li>
+              <a href="reports.html"><span class="icon">📊</span> Laporan</a>
+            </li>
+            <li>
+              <a href="#" id="logoutBtn"><span class="icon">➡️</span> Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+      <main class="main-content">
+        <header class="main-header">
+          <button class="hamburger-btn" id="hamburgerBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <h1>Buat Booking Manual</h1>
+          <div class="user-info">
+            <span>Halo, <span id="usernameDisplay">Admin</span>!</span>
+          </div>
+        </header>
+
+        <section class="container">
+          <p>
+            Gunakan form ini untuk mencatat booking dari pelanggan yang datang
+            langsung (walk-in).
+          </p>
+
+          <div id="message" class="message" style="display: none"></div>
+
+          <form id="adminBookingForm" class="booking-form">
+            <!-- Data Customer -->
+            <div class="form-section">
+              <h3>📋 Data Pelanggan</h3>
+              <div class="form-group">
+                <label for="customerName">Nama Pelanggan *</label>
+                <input
+                  type="text"
+                  id="customerName"
+                  required
+                  placeholder="Nama pelanggan atau 'Walk-in'"
+                />
+              </div>
+            </div>
+            <!-- Pilihan PlayStation -->
+            <div class="form-section">
+              <h3>🎮 Pilih PlayStation & Waktu</h3>
+              <div class="form-group">
+                <label for="playstationSelect">PlayStation:</label>
+                <select id="playstationSelect" required>
+                  <option value="">-- Memuat PlayStation --</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="bookingDate">Tanggal Booking:</label>
+                  <input type="date" id="bookingDate" required />
+                </div>
+                <div class="form-group">
+                  <label for="durationHours">Durasi (Jam):</label>
+                  <input
+                    type="number"
+                    id="durationHours"
+                    required
+                    min="1"
+                    placeholder="Min. 1 jam"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Slot Waktu Tersedia:</label>
+                <div id="availableSlots" class="slots-grid">
+                  <div class="slots-placeholder">
+                    <p>Pilih PS, tanggal, dan durasi untuk melihat slot.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Metode Pembayaran -->
+            <div class="form-section">
+              <h3>💳 Metode Pembayaran</h3>
+              <div class="form-group">
+                <!-- <label for="paymentMethod">Pilih Metode:</label> -->
+                <select id="paymentMethod" required>
+                  <option value="on_site">Bayar di Tempat (Tunai)</option>
+                  <!-- <option value="online">Bayar Online (Transfer)</option> -->
+                </select>
+                <small class="form-help"
+                  >Jika 'Bayar di Tempat', booking akan langsung
+                  dikonfirmasi.</small
+                >
+              </div>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              id="confirmBookingBtn"
+              disabled
+            >
+              Buat dan Konfirmasi Booking
+            </button>
+          </form>
+        </section>
+      </main>
+    </div>
+    <script src="../js/main.js"></script>
+    <script src="../js/admin/create-booking.js"></script>
+  </body>
+</html>

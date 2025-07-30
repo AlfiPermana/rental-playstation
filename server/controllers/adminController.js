@@ -188,6 +188,88 @@ exports.rejectPayment = async (req, res) => {
   }
 };
 
+/**
+ * Membuat booking baru oleh admin (untuk pelanggan walk-in).
+ */
+exports.createBookingByAdmin = async (req, res) => {
+  const {
+      playstationId,
+      bookingDate,
+      startTime,
+      durationHours,
+      customerName,
+      paymentMethod, // 'on_site' atau 'online'
+  } = req.body;
+
+  // --- Validasi Input Keras ---
+  if (!playstationId || !bookingDate || !startTime || !durationHours || !customerName || !paymentMethod) {
+      return res.status(400).json({ message: "Semua detail booking harus diisi." });
+  }
+
+  const psId = Number(playstationId);
+  const parsedDurationHours = parseInt(durationHours);
+
+  if (isNaN(parsedDurationHours) || parsedDurationHours <= 0) {
+      return res.status(400).json({ message: "Durasi harus berupa angka yang valid dan lebih dari 0." });
+  }
+
+  // --- Hitung Waktu Selesai & Harga ---
+  const [startHour, startMinute] = startTime.split(':').map(Number);
+  const startDateTime = new Date(`${bookingDate}T${String(startHour).padStart(2, '0')}:${String(startMinute).padStart(2, '0')}:00`);
+  startDateTime.setHours(startDateTime.getHours() + parsedDurationHours);
+  const endTime = `${String(startDateTime.getHours()).padStart(2, '0')}:${String(startDateTime.getMinutes()).padStart(2, '0')}:00`;
+
+  try {
+      // Ambil data PS untuk menghitung harga
+      const playstationData = await Playstation.getById(psId);
+      if (!playstationData) {
+          return res.status(404).json({ message: "PlayStation tidak ditemukan." });
+      }
+
+      const priceFromDb = parseFloat(playstationData.price_per_hour);
+      const bookingAmount = priceFromDb * parsedDurationHours;
+
+      // Validasi keamanan: Cek ketersediaan slot sekali lagi di backend
+      const availableSlotsForDate = await Booking.getAvailableSlots(playstationId, bookingDate);
+      const isSlotActuallyAvailable = availableSlotsForDate.some(slot => slot.time === startTime);
+
+      if (!isSlotActuallyAvailable) {
+          return res.status(409).json({ message: "Konflik: Slot waktu yang Anda pilih baru saja terisi. Mohon refresh dan pilih slot lain." });
+      }
+
+      // Buat booking menggunakan metode guest booking yang sudah ada
+      const bookingResult = await Booking.createGuestBooking(psId, bookingDate, startTime, endTime, parsedDurationHours, bookingAmount, customerName, 
+          `walkin-${Date.now()}@rental.com`, // Email placeholder unik
+          '0000', // Phone placeholder
+          paymentMethod);
+
+      const bookingId = bookingResult.insertId;
+
+      // --- Logika Inti: Otomatis Konfirmasi jika Bayar di Tempat ---
+      if (paymentMethod === 'on_site') {
+          await Booking.confirmPaymentByAdmin(bookingId); // Ini akan set status booking ke 'confirmed' dan payment ke 'paid'
+          res.status(201).json({
+              message: 'Booking walk-in berhasil dibuat dan dikonfirmasi.',
+              bookingId: bookingId
+          });
+      } else { // Jika admin memilih 'Bayar Online' (misal pelanggan minta link pembayaran)
+          const newBooking = await Booking.getById(bookingId);
+          const finalAmount = newBooking.amount;
+          const uniqueCode = newBooking.payment_code;
+          res.status(201).json({
+              message: 'Booking berhasil dibuat. Berikan link pembayaran kepada pelanggan.',
+              bookingId: bookingId,
+              redirectUrl: `${process.env.APP_URL}/payment.html?booking_id=${bookingId}&amount=${finalAmount}&unique_code=${uniqueCode}`
+          });
+      }
+
+  } catch (error) {
+      console.error("Error creating booking by admin:", error);
+      res.status(500).json({ message: "Server error saat membuat booking." });
+  }
+};
+
+
 // --- User Management ---
 exports.getAllUsers = async (req, res) => {
   try {

@@ -1,87 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manajemen Booking - Admin</title>
-    <link rel="stylesheet" href="../css/admin/dashboard-admin.css"> <link rel="stylesheet" href="../css/admin/manage-bookings.css">
-    </head>
-<body>
+    <link rel="stylesheet" href="../css/admin/dashboard-admin.css" />
+    <link rel="stylesheet" href="../css/admin/manage-bookings.css" />
+  </head>
+  <body>
     <div class="admin-wrapper">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h2><span class="icon">⚙️</span> Admin Panel</h2>
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2><span class="icon">⚙️</span> Admin Panel</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <a href="dashboard-admin.html"
+                ><span class="icon">🏠</span> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="manage-ps.html"
+                ><span class="icon">🎮</span> Manajemen PlayStation</a
+              >
+            </li>
+
+            <li>
+              <a href="manage-bookings.html" class="active"
+                ><span class="icon">📅</span> Daftar Booking</a
+              >
+            </li>
+            <li>
+              <a href="create-booking.html"
+                ><span class="icon">➕</span> Buat Booking Manual</a
+              >
+            </li>
+            <li>
+              <a href="manage-users.html"
+                ><span class="icon">👥</span> Manajemen User</a
+              >
+            </li>
+            <li>
+              <a href="reports.html"><span class="icon">📊</span> Laporan</a>
+            </li>
+            <li>
+              <a href="#" id="logoutBtn"><span class="icon">➡️</span> Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header class="main-header">
+          <button class="hamburger-btn" id="hamburgerBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <h1>Manajemen Booking</h1>
+        </header>
+
+        <section class="booking-management-section">
+          <h2><span class="icon">🗓️</span> Daftar Semua Booking</h2>
+
+          <div class="filter-controls-container">
+            <div class="form-group filter-group">
+              <label for="bookingStatusFilter">Filter Status:</label>
+              <select id="bookingStatusFilter">
+                <option value="all">Semua</option>
+                <option value="pending">Pending</option>
+                <option value="uploaded">Uploaded</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="paid">Paid</option>
+                <option value="failed">Failed</option>
+              </select>
             </div>
-            <nav class="sidebar-nav">
-                <ul>
-                    <li><a href="dashboard-admin.html"><span class="icon">🏠</span> Dashboard</a></li>
-                    <li><a href="manage-ps.html"><span class="icon">🎮</span> Manajemen PlayStation</a></li>
-                    <li><a href="manage-bookings.html" class="active"><span class="icon">📅</span> Manajemen Booking</a></li>
-                    <li><a href="manage-users.html"><span class="icon">👥</span> Manajemen User</a></li>
-                    <li><a href="reports.html"><span class="icon">📊</span> Laporan</a></li>
-                    <li><a href="#" id="logoutBtn"><span class="icon">➡️</span> Logout</a></li>
-                </ul>
-            </nav>
-        </aside>
+          </div>
 
-        <main class="main-content">
-            <header class="main-header">
-                <button class="hamburger-btn" id="hamburgerBtn">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                  </button>
-                <h1>Manajemen Booking</h1>
-            </header>
-
-            <section class="booking-management-section">
-                <h2><span class="icon">🗓️</span> Daftar Semua Booking</h2>
-                
-                <div class="filter-controls-container">
-                    <div class="form-group filter-group">
-                        <label for="bookingStatusFilter">Filter Status:</label>
-                        <select id="bookingStatusFilter">
-                            <option value="all">Semua</option>
-                            <option value="pending">Pending</option>
-                            <option value="uploaded">Uploaded</option> <option value="confirmed">Confirmed</option>
-                            <option value="completed">Completed</option>
-                            <option value="cancelled">Cancelled</option>
-                            <option value="paid">Paid</option>
-                            <option value="failed">Failed</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="table-container">
-                    <table id="bookingsTable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Kode Unik</th>
-                                <th>User</th>
-                                <th>PlayStation</th>
-                                <th>Tanggal & Waktu</th>
-                                <th>Durasi</th>
-                                <th>Harga Sewa</th>
-                                <th>Total Bayar</th>
-                                <th>Status Booking</th>
-                                <th>Status Pembayaran</th>
-                                <th>Bukti Pembayaran</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td colspan="10">Memuat data booking...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                <p id="noBookingsMessage" class="no-data-message" style="display: none;">Tidak ada data booking yang ditemukan.</p>
-                <div id="bookingMessage" class="message"></div>
-            </section>
-        </main>
+          <div class="table-container">
+            <table id="bookingsTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Kode Unik</th>
+                  <th>User</th>
+                  <th>PlayStation</th>
+                  <th>Tanggal & Waktu</th>
+                  <th>Durasi</th>
+                  <th>Harga Sewa</th>
+                  <th>Total Bayar</th>
+                  <th>Status Booking</th>
+                  <th>Status Pembayaran</th>
+                  <th>Bukti Pembayaran</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="10">Memuat data booking...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p
+            id="noBookingsMessage"
+            class="no-data-message"
+            style="display: none"
+          >
+            Tidak ada data booking yang ditemukan.
+          </p>
+          <div id="bookingMessage" class="message"></div>
+        </section>
+      </main>
     </div>
 
     <script src="../js/main.js"></script>
     <script src="../js/admin/manage-bookings.js"></script>
-</body>
+  </body>
 </html>

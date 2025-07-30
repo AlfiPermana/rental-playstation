@@ -11,6 +11,7 @@ router.delete('/playstations/:id', adminController.deletePlaystation);
 // Booking Routes (Tambahkan rute konfirmasi/tolak pembayaran di sini)
 router.get('/bookings', adminController.getAllBookings);
 router.put('/bookings/:id/status', adminController.updateBookingStatus);
+router.post('/bookings/create', adminController.createBookingByAdmin); // <<< RUTE BARU UNTUK BOOKING MANUAL
 
 // <<< TAMBAHKAN DUA RUTE INI >>>
 router.put('/bookings/:bookingId/confirm-payment', adminController.confirmPayment);
