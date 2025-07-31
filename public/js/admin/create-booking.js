@@ -122,7 +122,19 @@ document.addEventListener("DOMContentLoaded", () => {
       slots.forEach((slot) => {
         const slotItem = document.createElement("div");
         slotItem.classList.add("slot-item", "available");
-        slotItem.textContent = slot.time.substring(0, 5);
+
+        // Hitung dan tampilkan waktu selesai
+        const startHour = parseInt(slot.time.split(":")[0]);
+        const endHour = startHour + duration;
+        const endTime = `${String(endHour).padStart(2, "0")}:${
+          slot.time.split(":")[1]
+        }`;
+
+        slotItem.textContent = `${slot.time.substring(
+          0,
+          5
+        )} - ${endTime.substring(0, 5)}`;
+
         slotItem.dataset.startTime = slot.time;
         availableSlotsDiv.appendChild(slotItem);
       });
