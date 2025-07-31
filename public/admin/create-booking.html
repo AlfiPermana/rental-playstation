@@ -24,6 +24,16 @@
       .back-link:hover {
         text-decoration: underline;
       }
+      .form-info-box {
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background-color: #e9f5ff;
+        border-left: 4px solid #007bff;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        color: #333;
+      }
     </style>
   </head>
   <body>
@@ -137,6 +147,17 @@
                 </div>
               </div>
             </div>
+
+               <!-- Total Harga -->
+               <div id="priceDisplay" class="price-section" style="display: none">
+                <h3>💰 Total Harga</h3>
+                <div class="price-breakdown">
+                  <div class="price-item total">
+                    <span>Total Pembayaran:</span>
+                    <span id="totalPrice">Rp 0</span>
+                  </div>
+                </div>
+              </div>
             <!-- Metode Pembayaran -->
             <div class="form-section">
               <h3>💳 Metode Pembayaran</h3>
@@ -146,10 +167,9 @@
                   <option value="on_site">Bayar di Tempat (Tunai)</option>
                   <!-- <option value="online">Bayar Online (Transfer)</option> -->
                 </select>
-                <small class="form-help"
-                  >Jika 'Bayar di Tempat', booking akan langsung
-                  dikonfirmasi.</small
-                >
+                <div class="form-info-box">
+                  <p>💡 <strong>Catatan:</strong> Booking yang dibuat dari halaman ini akan otomatis dianggap <strong>"Bayar di Tempat"</strong> dan statusnya langsung <strong>"Confirmed"</strong>.</p>
+                </div>
               </div>
             </div>
             <button
